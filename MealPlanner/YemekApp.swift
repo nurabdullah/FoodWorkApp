@@ -27,7 +27,7 @@ struct YemekApp: App {
                             Text("Filter")
                         }
                     }
-                Listing()
+                ListingView()
                     .tabItem {
                         HStack{
                             Image(systemName: "list.clipboard")
