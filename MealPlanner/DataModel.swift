@@ -15,5 +15,6 @@ struct Food :  Hashable {
 class DataModel: ObservableObject{
     
     @Published var foodList: [Food] = []
+    
 
 }

@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State private var foodName: String = ""
     @State private var calorieType = 0
     @State private var options = ["Az Kalorili" , "Orta Kalorili" , "Çok kalorili"]
     @EnvironmentObject private var dataModel: DataModel
+
+
+   
     
     func addItem(){
         let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
@@ -19,13 +23,12 @@ struct ContentView: View {
         dataModel.foodList.append(food)
         calorieType = 0
         foodName = ""
-        
+    
 
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 60){
-    
             Spacer()
             VStack(alignment: .leading, spacing:7) {
                 Section(header: Text("Yemek Adı")){
