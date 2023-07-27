@@ -10,6 +10,7 @@ import Foundation
 struct Food :  Hashable {
     var foodName: String
     var caloryType: Int
+    var time: Date
 }
 
 class DataModel: ObservableObject{

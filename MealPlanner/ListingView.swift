@@ -11,12 +11,7 @@ import Foundation
 
 struct ListingView: View {
     @EnvironmentObject private var dataModel: DataModel
-  
 
-
-
-    
-   
     
     func caloryCheck(erc: Int)->String{
         switch erc{
@@ -32,20 +27,26 @@ struct ListingView: View {
         default:
             return ""
         }
+        
     }
-    
+    private func formatDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM - HH:mm"
+        return dateFormatter.string(from: date)
+    }
     
     var body: some View {
         
         NavigationView{
-    
             List{
-                ForEach(dataModel.foodList, id: \.self){ item in
+                ForEach(dataModel.foodList.sorted(by:{$1.time<$0.time}), id: \.self){ item in
                     Section{
                         HStack{
                             Text(item.foodName)
                             Spacer()
                             Text("\(caloryCheck(erc:item.caloryType))")
+                            Spacer()
+                            Text("\(formatDate(date:item.time))")
                             
                         }
                     }.listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
