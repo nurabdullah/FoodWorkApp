@@ -17,5 +17,7 @@ class DataModel: ObservableObject{
     
     @Published var foodList: [Food] = []
     
-
+   
+        
 }
+

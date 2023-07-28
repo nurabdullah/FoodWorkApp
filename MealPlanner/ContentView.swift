@@ -28,7 +28,11 @@ struct ContentView: View {
         calorieType = 0
         foodName = ""
     }
+    
    
+   
+   
+    
 
     var body: some View {
         VStack(alignment: .leading, spacing: 60){

@@ -35,8 +35,12 @@ struct ListingView: View {
         return dateFormatter.string(from: date)
     }
     
+    func deleteItem(at indexSet: IndexSet){
+        dataModel.foodList.remove(atOffsets: indexSet)
+    }
+    
+    
     var body: some View {
-        
         NavigationView{
             List{
                 ForEach(dataModel.foodList.sorted(by:{$1.time<$0.time}), id: \.self){ item in
@@ -52,15 +56,22 @@ struct ListingView: View {
                         }
                     }.listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
                     
-                }
-            }
+                }.onDelete(perform: {indexSet in
+                    deleteItem(at: indexSet)
+
+                })
+                    
+            }.navigationBarItems(trailing: EditButton())
+            
             .listStyle(.plain)
             .navigationTitle("Kalori Kontrol")
             .listStyle(InsetGroupedListStyle())
             .environment(\.horizontalSizeClass, .compact)
             
         }
+      
     }
+ 
     
     
     struct ListingView_Previews: PreviewProvider {
