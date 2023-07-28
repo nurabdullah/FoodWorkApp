@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// Boş isim kaydedilmemeli
+// Boş isim kaydedilmemeli ++
 // listelemede istediğimiz silme (click)
 // 1 buton olacak listingde biri eskiden yeniye diğeri yeniden eskiye sıralayacak
 
@@ -20,12 +20,13 @@ struct ContentView: View {
     
 
     func addItem(){
-        let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
-        let food = Food(foodName: trimmedString, caloryType: calorieType,time: currentDate)
-        dataModel.foodList.append(food)
+        if !foodName.isEmpty {
+            let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
+            let food = Food(foodName: trimmedString, caloryType: calorieType,time: currentDate)
+            dataModel.foodList.append(food)
+        }
         calorieType = 0
         foodName = ""
-
     }
    
 

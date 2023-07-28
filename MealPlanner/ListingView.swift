@@ -44,10 +44,11 @@ struct ListingView: View {
                         HStack{
                             Text(item.foodName)
                             Spacer()
-                            Text("\(caloryCheck(erc:item.caloryType))")
-                            Spacer()
                             Text("\(formatDate(date:item.time))")
-                            
+                                .font(.system(size: 12))
+                            Spacer()
+                            Text("\(caloryCheck(erc:item.caloryType))")
+
                         }
                     }.listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
                     
