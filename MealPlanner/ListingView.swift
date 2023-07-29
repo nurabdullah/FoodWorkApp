@@ -10,8 +10,12 @@ import Foundation
 
 
 struct ListingView: View {
-    @EnvironmentObject private var dataModel: DataModel
-
+    @EnvironmentObject private var dataModel : DataModel
+    @State private var isAsceding = true;
+    @State var foodList : [Food] = []
+    
+    //onapper ile init arasindaki fark nedir? nerede hangisi kullanilmali?
+    
     
     func caloryCheck(erc: Int)->String{
         switch erc{
@@ -27,7 +31,7 @@ struct ListingView: View {
         default:
             return ""
         }
-        
+
     }
     private func formatDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -35,15 +39,22 @@ struct ListingView: View {
         return dateFormatter.string(from: date)
     }
     
-    func deleteItem(at indexSet: IndexSet){
-        dataModel.foodList.remove(atOffsets: indexSet)
+    private  func sortFoodList(){
+        isAsceding = !isAsceding
+        
+        if !isAsceding {
+            foodList = dataModel.foodList.sorted(by:{$1.time < $0.time})
+        }
+        else {
+            foodList = dataModel.foodList.sorted(by:{$1.time > $0.time})
+        }
+        
     }
-    
     
     var body: some View {
         NavigationView{
             List{
-                ForEach(dataModel.foodList.sorted(by:{$1.time<$0.time}), id: \.self){ item in
+                ForEach(foodList, id: \.self){ item in
                     Section{
                         HStack{
                             Text(item.foodName)
@@ -52,25 +63,22 @@ struct ListingView: View {
                                 .font(.system(size: 12))
                             Spacer()
                             Text("\(caloryCheck(erc:item.caloryType))")
-
+                            
                         }
                     }.listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
-                    
-                }.onDelete(perform: {indexSet in
-                    deleteItem(at: indexSet)
-
-                })
-                    
-            }.navigationBarItems(trailing: EditButton())
-            
-            .listStyle(.plain)
-            .navigationTitle("Kalori Kontrol")
-            .listStyle(InsetGroupedListStyle())
-            .environment(\.horizontalSizeClass, .compact)
-            
+                }
+                Button("Sırala", action: sortFoodList).frame(maxWidth: .infinity)
+            }.onAppear{
+                foodList = dataModel.foodList
+            }
         }
-      
+        .listStyle(.plain)
+        .navigationTitle("Kalori Kontrol")
+        .listStyle(InsetGroupedListStyle())
+        .environment(\.horizontalSizeClass, .compact)
     }
+    
+}
  
     
     
@@ -80,5 +88,5 @@ struct ListingView: View {
             
         }
     }
-}
+
 
