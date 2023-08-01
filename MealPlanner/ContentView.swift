@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-// Boş isim kaydedilmemeli ++
-// listelemede istediğimiz silme (click)+++
-// 1 buton olacak listingde biri eskiden yeniye diğeri yeniden eskiye sıralayacak
-// alert çıkart 
 
 struct ContentView: View {
     @State private var foodName: String = ""
@@ -18,15 +14,20 @@ struct ContentView: View {
     @State private var options = ["Az Kalorili" , "Orta Kalorili" , "Çok kalorili"]
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
+    @State private var alert: String = ""
+
     
 
     func addItem(){
         if !foodName.isEmpty {
+            alert = ""
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: calorieType,time: currentDate)
             dataModel.foodList.append(food)
             calorieType = 0
             foodName = ""
+        }else {
+            alert =  "Yemek Adı boş olamaz !!"
         }
        
     }
@@ -57,7 +58,13 @@ struct ContentView: View {
                         }
                     }.pickerStyle(SegmentedPickerStyle())
                 }
+            
             }
+            Spacer()
+            Text(alert)
+                .foregroundColor(Color.red)
+                .frame(maxWidth: .infinity, alignment: .bottom)
+                
             Spacer()
             Button("EKLE" , action: addItem).frame(maxWidth: .infinity)
             

@@ -11,10 +11,9 @@ import Foundation
 
 struct ListingView: View {
     @EnvironmentObject private var dataModel : DataModel
-    @State private var isAsceding = true;
+    @State private var isAsceding: Bool = true;
     @State var foodList : [Food] = []
-    
-    //onapper ile init arasindaki fark nedir? nerede hangisi kullanilmali?
+    @State private var searchTerm: String = ""
     
     
     func caloryCheck(erc: Int)->String{
@@ -43,39 +42,83 @@ struct ListingView: View {
         isAsceding = !isAsceding
         
         if !isAsceding {
-            foodList = dataModel.foodList.sorted(by:{$1.time < $0.time})
+            foodList = foodList.sorted(by:{$1.time < $0.time})
         }
         else {
-            foodList = dataModel.foodList.sorted(by:{$1.time > $0.time})
+            foodList = foodList.sorted(by:{$1.time > $0.time})
         }
-        
     }
+    
+    func deleteItem(_ item: Food) {
+        dataModel.foodList.removeAll { $0 == item }
+        foodList.removeAll { $0 == item }
+       }
+    
+    func performSearch(with newValue: String) {
+
+        if newValue.isEmpty {
+            foodList = dataModel.foodList
+        }
+        else {
+            foodList = dataModel.foodList.filter({$0.foodName.localizedCaseInsensitiveContains(newValue)})
+        }
+     }
     
     var body: some View {
         NavigationView{
             List{
+                HStack{
+                    Spacer()
+                    Button {
+                        sortFoodList()
+                    } label: {
+                        Label("", systemImage: "arrow.up.and.down.text.horizontal" )
+                    }
+                }
+                
                 ForEach(foodList, id: \.self){ item in
                     Section{
                         HStack{
+                            Image(systemName: "staroflife")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20)
+                                .foregroundColor(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
                             Text(item.foodName)
                             Spacer()
                             Text("\(formatDate(date:item.time))")
                                 .font(.system(size: 12))
                             Spacer()
                             Text("\(caloryCheck(erc:item.caloryType))")
+                            Spacer(minLength: 10)
+                            Button {
+                                deleteItem(item)
+                            }
+                        label: {
+                            Label("", systemImage: "trash.circle")
+                        }
+                        .foregroundColor(.red)
                             
                         }
-                    }.listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
+                    }
+                    //                    .listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
                 }
-                Button("Sırala", action: sortFoodList).frame(maxWidth: .infinity)
+                
+                //Button("Sırala", action: sortFoodList).frame(maxWidth: .infinity)
+                
+                
             }.onAppear{
                 foodList = dataModel.foodList
-            }
+            }.listStyle(.plain)
+                .navigationTitle("Kalori Kontrol")
+                .listStyle(InsetGroupedListStyle())
+                .environment(\.horizontalSizeClass, .compact)
+                .searchable(text: $searchTerm)
+                .onChange(of: searchTerm) { newValue in
+                    performSearch(with: newValue)
+                        }
         }
-        .listStyle(.plain)
-        .navigationTitle("Kalori Kontrol")
-        .listStyle(InsetGroupedListStyle())
-        .environment(\.horizontalSizeClass, .compact)
+        
     }
     
 }
