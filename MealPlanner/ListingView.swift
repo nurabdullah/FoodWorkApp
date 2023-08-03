@@ -17,8 +17,6 @@ struct ListingView: View {
     
     // popup çıkaralım ada göre tarihe göre veya tipe göre sıralama sıralama butonuna tıklayınca açılacak
     // boş dizi de uyarıya popup verecek
-    // delete eski haline gelecek
-    // 
     
     func caloryCheck(erc: Int)->String{
         switch erc{
@@ -53,9 +51,9 @@ struct ListingView: View {
         }
     }
     
-    func deleteItem(_ item: Food) {
-        dataModel.foodList.removeAll { $0 == item }
-        foodList.removeAll { $0 == item }
+    func deleteItem(at offsets: IndexSet) {
+           foodList.remove(atOffsets: offsets)
+            dataModel.foodList.remove(atOffsets: offsets)
        }
     
     func performSearch(with newValue: String) {
@@ -71,15 +69,6 @@ struct ListingView: View {
     var body: some View {
         NavigationView{
             List{
-                HStack{
-                    Spacer()
-                    Button {
-                        sortFoodList()
-                    } label: {
-                        Label("", systemImage: "arrow.up.and.down.text.horizontal" )
-                    }
-                }
-                
                 ForEach(foodList, id: \.self){ item in
                     Section{
                         HStack{
@@ -94,26 +83,30 @@ struct ListingView: View {
                                 .font(.system(size: 12))
                             Spacer()
                             Text("\(caloryCheck(erc:item.caloryType))")
-                            Spacer(minLength: 10)
-                            Button {
-                                deleteItem(item)
-                            }
-                        label: {
-                            Label("", systemImage: "trash.circle")
-                        }
-                        .foregroundColor(.red)
-                            
+                           
                         }
                     }
                     //                    .listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
-                }
+                }.onDelete(perform: deleteItem)
                 
                 //Button("Sırala", action: sortFoodList).frame(maxWidth: .infinity)
                 
                 
-            }.onAppear{
+            }
+            .onAppear{
                 foodList = dataModel.foodList
-            }.listStyle(.plain)
+            }.toolbar {
+                // 2
+                EditButton()
+                Spacer(minLength: 100)
+                Button {
+                    sortFoodList()
+                } label: {
+                    Label("", systemImage: "arrow.up.and.down.text.horizontal" )
+                }
+
+            }
+            .listStyle(.plain)
                 .navigationTitle("Kalori Kontrol")
                 .listStyle(InsetGroupedListStyle())
                 .environment(\.horizontalSizeClass, .compact)
