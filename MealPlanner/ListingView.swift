@@ -15,6 +15,10 @@ struct ListingView: View {
     @State var foodList : [Food] = []
     @State private var searchTerm: String = ""
     
+    // popup çıkaralım ada göre tarihe göre veya tipe göre sıralama sıralama butonuna tıklayınca açılacak
+    // boş dizi de uyarıya popup verecek
+    // delete eski haline gelecek
+    // 
     
     func caloryCheck(erc: Int)->String{
         switch erc{
