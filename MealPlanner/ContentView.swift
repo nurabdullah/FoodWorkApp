@@ -14,29 +14,24 @@ struct ContentView: View {
     @State private var options = ["Az Kalorili" , "Orta Kalorili" , "Çok kalorili"]
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
-    @State private var alert: String = ""
+    @State private var showingAlert = false
 
     
 
     func addItem(){
         if !foodName.isEmpty {
-            alert = ""
+            showingAlert = false
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: calorieType,time: currentDate)
             dataModel.foodList.append(food)
             calorieType = 0
             foodName = ""
         }else {
-            alert =  "Yemek Adı boş olamaz !!"
+            showingAlert = true
         }
        
     }
-    
    
-   
-   
-    
-
     var body: some View {
         VStack(alignment: .leading, spacing: 60){
             Spacer()
@@ -59,12 +54,10 @@ struct ContentView: View {
                     }.pickerStyle(SegmentedPickerStyle())
                 }
             
-            }
-            Spacer()
-            Text(alert)
-                .foregroundColor(Color.red)
-                .frame(maxWidth: .infinity, alignment: .bottom)
-                
+            }.alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Eksik Bilgi"), message: Text("Yemek Adını Girmediniz!"), dismissButton: .default(Text("Geri Dön!")))
+                    }
+
             Spacer()
             Button("EKLE" , action: addItem).frame(maxWidth: .infinity)
             

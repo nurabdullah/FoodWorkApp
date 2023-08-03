@@ -86,19 +86,14 @@ struct ListingView: View {
                            
                         }
                     }
-                    //                    .listRowBackground(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
+                    
                 }.onDelete(perform: deleteItem)
-                
-                //Button("Sırala", action: sortFoodList).frame(maxWidth: .infinity)
-                
                 
             }
             .onAppear{
                 foodList = dataModel.foodList
             }.toolbar {
-                // 2
                 EditButton()
-                Spacer(minLength: 100)
                 Button {
                     sortFoodList()
                 } label: {
@@ -113,7 +108,8 @@ struct ListingView: View {
                 .searchable(text: $searchTerm)
                 .onChange(of: searchTerm) { newValue in
                     performSearch(with: newValue)
-                        }
+                       
+            }
         }
         
     }
