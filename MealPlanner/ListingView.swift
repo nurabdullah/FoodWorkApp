@@ -15,8 +15,6 @@ struct ListingView: View {
     @State var foodList : [Food] = []
     @State private var searchTerm: String = ""
     
-    // popup çıkaralım ada göre tarihe göre veya tipe göre sıralama sıralama butonuna tıklayınca açılacak
-    // boş dizi de uyarıya popup verecek
     
     func caloryCheck(erc: Int)->String{
         switch erc{
@@ -40,9 +38,9 @@ struct ListingView: View {
         return dateFormatter.string(from: date)
     }
     
-    private  func sortFoodList(){
+    private  func sortFoodListByDate(){
         isAsceding = !isAsceding
-        
+       
         if !isAsceding {
             foodList = foodList.sorted(by:{$1.time < $0.time})
         }
@@ -51,10 +49,33 @@ struct ListingView: View {
         }
     }
     
-    func deleteItem(at offsets: IndexSet) {
+    private func sortFoodListByName(){
+       isAsceding = !isAsceding
+
+        if !isAsceding {
+            foodList = foodList.sorted(by:{$0.foodName < $1.foodName})
+        }
+        else {
+            foodList = foodList.sorted(by:{$0.foodName > $1.foodName})
+        }
+      
+    }
+    private func sortFoodListByCaloryType(){
+       isAsceding = !isAsceding
+        
+        if !isAsceding {
+            foodList = foodList.sorted(by:{$0.caloryType < $1.caloryType})
+        }
+        else {
+            foodList = foodList.sorted(by:{$0.caloryType > $1.caloryType})
+        }
+    }
+    
+    private func deleteItem(at offsets: IndexSet) {
            foodList.remove(atOffsets: offsets)
             dataModel.foodList.remove(atOffsets: offsets)
        }
+   
     
     func performSearch(with newValue: String) {
 
@@ -94,11 +115,24 @@ struct ListingView: View {
                 foodList = dataModel.foodList
             }.toolbar {
                 EditButton()
-                Button {
-                    sortFoodList()
-                } label: {
-                    Label("", systemImage: "arrow.up.and.down.text.horizontal" )
+                Menu("Sırala"){
+                    Button {
+                        sortFoodListByName()
+                    } label: {
+                        Label("Ad", systemImage: "textformat.alt" )
+                    }
+                    Button {
+                        sortFoodListByDate()
+                    } label: {
+                        Label("Tarih", systemImage: "arrow.up.and.down.text.horizontal" )
+                    }
+                    Button {
+                        sortFoodListByCaloryType()
+                    } label: {
+                        Label("Kalori", systemImage: "greaterthan.circle.fill" )
+                    }
                 }
+               
 
             }
             .listStyle(.plain)
