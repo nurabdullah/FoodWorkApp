@@ -13,6 +13,7 @@ struct YemekApp: App {
     var body: some Scene {
         WindowGroup {
             TabView{
+
                 ContentView()
                     .tabItem{
                         HStack{
@@ -32,10 +33,16 @@ struct YemekApp: App {
                         HStack{
                             Image(systemName: "list.clipboard")
                             Text("Listele")
-                        }
+                            
+                        }   
+
                     }
             }
+            
             .environmentObject(dataModel)
+            .onAppear(){
+                UITabBar.appearance().backgroundColor = .lightGray
+            }
         }
     }
 }

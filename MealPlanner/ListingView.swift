@@ -75,6 +75,9 @@ struct ListingView: View {
            foodList.remove(atOffsets: offsets)
             dataModel.foodList.remove(atOffsets: offsets)
        }
+    private func resetList(){
+        foodList = dataModel.foodList;
+    }
    
     
     func performSearch(with newValue: String) {
@@ -86,6 +89,7 @@ struct ListingView: View {
             foodList = dataModel.foodList.filter({$0.foodName.localizedCaseInsensitiveContains(newValue)})
         }
      }
+    
     
     var body: some View {
         NavigationView{
@@ -131,6 +135,12 @@ struct ListingView: View {
                     } label: {
                         Label("Kalori", systemImage: "greaterthan.circle.fill" )
                     }
+                     Button {
+                        resetList()
+                    } label: {
+                        Label("Reset", systemImage: "gobackward" )
+                    }
+                    
                 }
                
 
