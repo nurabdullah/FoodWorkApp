@@ -1,9 +1,3 @@
-//
-//  Listing.swift
-//  MealPlanner
-//
-//  Created by F13  on 12.07.2023.
-//
 
 import SwiftUI
 import Foundation
@@ -14,12 +8,33 @@ struct ListingView: View {
     @State private var isAsceding: Bool = true;
     @State var foodList : [Food] = []
     @State private var searchTerm: String = ""
+    @State private var resultText: String = ""
+    @State private var calorie: Double = 0
+    
+    
+    public func calculateAverageCalories() -> String{
+        let totalCalories = foodList.reduce(0) { $0 + $1.caloryType }
+        calorie = Double(totalCalories) / Double(foodList.count)
+        print("Ortalama Kalori:", calorie)
+        resultText = ""
+        if calorie < 0.7 {
+            resultText = "Düşük düzeyde kalorili bir liste."
+        } else if calorie >= 0.7 && calorie < 1.5  {
+            resultText = "Orta düzeyde kalorili bir liste."
+        } else {
+            resultText = "Yüksek düzeyde kalorili bir liste."
+        }
+        return resultText
+
+        }
+    
     
     
     func caloryCheck(erc: Int)->String{
         switch erc{
         case 0:
             return "Az Kalorili"
+            
             
         case 1:
             return  "Orta Kalorili"
@@ -36,6 +51,8 @@ struct ListingView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM - HH:mm"
         return dateFormatter.string(from: date)
+        
+
     }
     
     private  func sortFoodListByDate(){
@@ -93,7 +110,9 @@ struct ListingView: View {
     
     var body: some View {
         NavigationView{
+            
             List{
+                Text(resultText)
                 ForEach(foodList, id: \.self){ item in
                     Section{
                         HStack{
@@ -103,6 +122,7 @@ struct ListingView: View {
                                 .frame(width: 20)
                                 .foregroundColor(item.caloryType==2 ? Color.red:item.caloryType==1 ? Color.blue : Color.green)
                             Text(item.foodName)
+                            
                             Spacer()
                             Text("\(formatDate(date:item.time))")
                                 .font(.system(size: 12))
@@ -117,6 +137,8 @@ struct ListingView: View {
             }
             .onAppear{
                 foodList = dataModel.foodList
+                calculateAverageCalories()
+
             }.toolbar {
                 EditButton()
                 Menu("Sırala"){
