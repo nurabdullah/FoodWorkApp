@@ -21,9 +21,12 @@ struct ListingView: View {
             resultText = "Düşük düzeyde kalorili bir liste."
         } else if calorie >= 0.7 && calorie < 1.5  {
             resultText = "Orta düzeyde kalorili bir liste."
-        } else {
+        } else if calorie >= 1.5 && calorie < 10  {
             resultText = "Yüksek düzeyde kalorili bir liste."
+        }else{
+            resultText = "Liste boş yemek yeme vakti."
         }
+            
         return resultText
 
         }

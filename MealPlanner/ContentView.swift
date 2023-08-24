@@ -61,7 +61,7 @@ struct ContentView: View {
             }
             VStack(alignment: .leading, spacing: 7){
                 
-                Section(header: Text("Kalori Seviyesi Seçiniz")
+                Section(header: Text("Kalori Seviyesi Seçiniz") 
                     .font(.caption)){
                         Picker(selection: $calorieType,label: Text("")){
                             ForEach(0 ..< options.count){
