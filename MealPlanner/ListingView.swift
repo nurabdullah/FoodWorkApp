@@ -50,7 +50,7 @@ struct ListingView: View {
     }
     private func formatDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM - HH:mm"
+        dateFormatter.dateFormat = "d MMM, HH:mm "
         return dateFormatter.string(from: date)
         
         
