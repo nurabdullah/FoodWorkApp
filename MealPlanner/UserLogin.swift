@@ -15,12 +15,12 @@ struct UserLogin: View {
             print(dataModel.isLogin)
             dataModel.myArray.append(userName)
             userName = ""
-
+            
         }else {
             userName = ""
             
         }
-      
+        
     }
     
     func userDelete(){
@@ -36,29 +36,32 @@ struct UserLogin: View {
         VStack(alignment: .leading, spacing: 20) {
             Spacer()
             
-            VStack(alignment: .leading, spacing: 10) {
-                Section(header: Text("Kullanıcı Adı Giriniz")) {
+            if dataModel.isLogin {
+                Text("Active User  \(dataModel.myArray.first ?? "")")
+                    .font(.headline)
+                    .padding()
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section(header: Text("Kullanıcı Adı Giriniz")) {
+                        TextField("Hamza - Nurten - Erdoğan", text: $userName)
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10.0)
+                                    .strokeBorder(Color.red, style: StrokeStyle(lineWidth: 0.6))
+                            )
+                    }
                     
-                    TextField("Hamza - Nurten - Erdoğan", text: $userName)
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10.0)
-                                .strokeBorder(Color.red, style: StrokeStyle(lineWidth: 0.6))
-                        )
+                    Button("Login", action: addUser)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
-                
-                Button("login", action: addUser)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                                
-                Button("logout", action: userDelete)
-                    .frame(maxWidth: .infinity, alignment: .center)
             }
+            
+            Button("Logout", action: userDelete)
+                .frame(maxWidth: .infinity, alignment: .center)
             
             Spacer()
         }
         .padding(25)
-    
-    
     }
 }
 
