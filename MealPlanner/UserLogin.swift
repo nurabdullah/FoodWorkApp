@@ -13,7 +13,7 @@ struct UserLogin: View {
         if !userName.isEmpty{
             
             dataModel.isLogin = true
-            dataModel.myArray.append(userName)
+            dataModel.loginMyArray.append(userName)
             userName = ""
             
         }
@@ -22,7 +22,7 @@ struct UserLogin: View {
     
     func userDelete(){
         
-        dataModel.myArray.removeAll()
+        dataModel.loginMyArray.removeAll()
         dataModel.isLogin = false
         
     }
@@ -33,7 +33,7 @@ struct UserLogin: View {
             Spacer()
             
             if dataModel.isLogin{
-                Text("Active User  \(dataModel.myArray.first ?? "")")
+                Text("Active User  \(dataModel.loginMyArray.first ?? "")")
                     .font(.headline)
                     .padding()
             } else {

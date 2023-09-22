@@ -32,7 +32,7 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 60) {
             
             
-            if let firstItem = dataModel.myArray.first {
+            if let firstItem = dataModel.loginMyArray.first {
                 Text("Hoşgeldin " + firstItem)
                     .font(.largeTitle)
                     .fontWeight(.bold)
