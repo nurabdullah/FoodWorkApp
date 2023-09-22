@@ -7,10 +7,13 @@ struct Food: Codable, Hashable {
 }
 
 class DataModel: ObservableObject {
-   
+    
     private let dataKey = "savedFoodList"
     private let loginKey = "isLogin"
     private let arrayKey = "myArray"
+    
+    
+    
     
     @Published var isLogin: Bool = false {
         didSet {
@@ -44,6 +47,7 @@ class DataModel: ObservableObject {
     
     private func saveLoginData() {
         UserDefaults.standard.set(isLogin, forKey: loginKey)
+        
     }
     
     private func saveArrayData() {
@@ -60,8 +64,9 @@ class DataModel: ObservableObject {
     
     private func loadLoginData() {
         isLogin = UserDefaults.standard.bool(forKey: loginKey)
+        
     }
-
+    
     private func loadArrayData() {
         myArray = UserDefaults.standard.stringArray(forKey: arrayKey) ?? []
     }

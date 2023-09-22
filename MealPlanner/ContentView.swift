@@ -11,7 +11,7 @@ struct ContentView: View {
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
     @State private var showingAlert = false
-
+    
     func addItem(){
         if !foodName.isEmpty {
             showingAlert = false
@@ -40,7 +40,7 @@ struct ContentView: View {
             }
             
             Spacer()
-
+            
             VStack(alignment: .leading, spacing: 7) {
                 Section(header: Text("Yemek Adı")) {
                     TextField("Kuru Fasülye", text: $foodName)
@@ -64,13 +64,13 @@ struct ContentView: View {
             }
             
             Spacer()
-        
+            
             Button("EKLE", action: addItem)
                 .frame(maxWidth: .infinity)
         }
         .padding()
     }
-
+    
 }
 
 

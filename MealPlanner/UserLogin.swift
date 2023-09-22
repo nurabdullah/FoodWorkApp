@@ -11,12 +11,9 @@ struct UserLogin: View {
     
     func addUser(){
         if !userName.isEmpty{
-            dataModel.isLogin = true
-            print(dataModel.isLogin)
-            dataModel.myArray.append(userName)
-            userName = ""
             
-        }else {
+            dataModel.isLogin = true
+            dataModel.myArray.append(userName)
             userName = ""
             
         }
@@ -24,10 +21,9 @@ struct UserLogin: View {
     }
     
     func userDelete(){
-        if(dataModel.myArray.count>=0){
-            dataModel.myArray.removeAll()
-            dataModel.isLogin = false
-        }
+        
+        dataModel.myArray.removeAll()
+        dataModel.isLogin = false
         
     }
     
@@ -36,14 +32,15 @@ struct UserLogin: View {
         VStack(alignment: .leading, spacing: 20) {
             Spacer()
             
-            if dataModel.isLogin {
+            if dataModel.isLogin{
                 Text("Active User  \(dataModel.myArray.first ?? "")")
                     .font(.headline)
                     .padding()
             } else {
                 VStack(alignment: .leading, spacing: 10) {
                     Section(header: Text("Kullanıcı Adı Giriniz")) {
-                        TextField("Hamza - Nurten - Erdoğan", text: $userName)
+                        TextField("Abdullah", text: $userName)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10.0)
@@ -53,6 +50,7 @@ struct UserLogin: View {
                     
                     Button("Login", action: addUser)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                 }
             }
             
@@ -64,6 +62,7 @@ struct UserLogin: View {
         .padding(25)
     }
 }
+
 
 struct UserLogin_Previews: PreviewProvider {
     static var previews: some View {
