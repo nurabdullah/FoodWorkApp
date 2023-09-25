@@ -13,6 +13,9 @@ struct Filter: View {
     var body: some View {
         VStack{
             
+            Text("Yakın'da Hizmetinizdeyiz....")
+            
+            
         }
 
     }
