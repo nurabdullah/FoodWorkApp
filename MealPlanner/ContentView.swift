@@ -10,63 +10,84 @@ struct ContentView: View {
     @State private var options = ["Az Kalorili" , "Orta Kalorili" , "Çok kalorili"]
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
-    @State private var showingAlert = false
+    @FocusState private var isFocusedFoodName: Bool
+    
+    
+    
+    
+    var isFoodAddedEnabled: Bool {
+        return !foodName.isEmpty
+    }
+    
     
     func addItem(){
-        if !foodName.isEmpty {
-            showingAlert = false
+        if isFoodAddedEnabled {
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: calorieType,time: currentDate)
             dataModel.foodList.append(food)
             calorieType = 0
             foodName = ""
-            
-            
-        }else {
-            showingAlert = true
         }
         
     }
     
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 60) {
+        VStack(alignment: .leading, spacing: 30) {
             
             
             if let firstItem = dataModel.loginMyArray.first {
                 Text("Hoşgeldin " + firstItem)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 10)
+                    .font(.system(size: 25))
             }
             
-            Spacer()
             
-            VStack(alignment: .leading, spacing: 7) {
-                Section(header: Text("Yemek Adı")) {
-                    TextField("Kuru Fasülye", text: $foodName)
-                        .padding(10)
-                        .overlay(RoundedRectangle(cornerRadius: 10.0).strokeBorder(Color.red, style: StrokeStyle(lineWidth: 0.6)))
-                }
-            }
-            
-            VStack(alignment: .leading, spacing: 7) {
-                Section(header: Text("Kalori Seviyesi Seçiniz").font(.caption)) {
-                    Picker(selection: $calorieType, label: Text("")) {
-                        ForEach(0 ..< options.count) {
-                            Text(self.options[$0])
-                        }
+            VStack(alignment: .leading, spacing: 30) {
+                Section(header: Text("Yemek Adı Giriniz")
+                    .font(.system(size: 25))) {
+                        TextField("Kuru Fasülye,Yumurta", text: $foodName)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedFoodName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedFoodName)
                     }
-                    .pickerStyle(SegmentedPickerStyle())
+            }
+            
+                        VStack(alignment: .leading, spacing: 30) {
+                            Section(header: Text("Kalori Seviyesi Seçiniz").font(.caption)) {
+                                Picker(selection: $calorieType, label: Text("")) {
+                                    ForEach(0 ..< options.count) {
+                                        Text(self.options[$0])
+                                    }
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                            }
+                        }
+            
+            
+            
+            
+            
+            Button(action: addItem) {
+                HStack {
+                    
+                    Text("EKLE")
+                        .foregroundColor(.white)
                 }
             }
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Eksik Bilgi"), message: Text("Yemek Adını Girmediniz!"), dismissButton: .default(Text("Geri Dön!")))
-            }
-            
+            .frame(maxWidth: .infinity, alignment: .center)
+            .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
+                .disabled(!isFoodAddedEnabled))
+            .foregroundColor(.white)
+            .padding()
+            .background(isFoodAddedEnabled ? Color.orange : Color.gray)
+            .cornerRadius(10)
             Spacer()
             
-            Button("EKLE", action: addItem)
-                .frame(maxWidth: .infinity)
         }
         .padding()
     }
