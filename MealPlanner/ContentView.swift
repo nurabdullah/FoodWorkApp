@@ -7,16 +7,15 @@ struct ToastView: View {
             VStack {
                 Image(systemName: "hand.thumbsup")
                     .font(.largeTitle)
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.orange)
                     .padding(.bottom, 10)
-                
+                    
                 Text(message)
                     .foregroundColor(Color.white)
-                    .padding(10)
                     .cornerRadius(10)
             }
             .padding()
-            .background(Color.black.opacity(0.3))
+            .background(Color.gray.opacity(0.5))
             .cornerRadius(20)
             .transition(.opacity)
             .animation(.easeInOut(duration: 0.4))
@@ -35,6 +34,8 @@ struct ContentView: View {
     @State private var showToastMessage = false
     @State private var showSheet = false
     @State private var sheetHeight: CGFloat = .zero
+    @State private var selectedCalorieText = "Seçiniz"
+    
     
     var isFoodAddedEnabled: Bool {
         return !foodName.isEmpty
@@ -44,11 +45,12 @@ struct ContentView: View {
     func confirmCalories(){
         
         showSheet = false
-
+        
     }
     func rejectCalories(){
         selectedCalorieTypeIndex = nil
-
+        selectedCalorieText = "Seçiniz"
+        
     }
     
     func addItem() {
@@ -90,89 +92,99 @@ struct ContentView: View {
                         .focused($isFocusedFoodName)
                 }
                 
-                
-                
-                
-                
                 Button(action: {
                     showSheet = true
                 }) {
-                    Text("Kalori Seçiniz")
+                    HStack{
+                        Text("Kalori Seçiniz")
+                           Spacer()
+                        Text(selectedCalorieText)
+
+
+                    }.frame(maxWidth: .infinity)
                         .padding(10)
                         .foregroundColor(Color.gray)
-
                         .overlay(
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 2)
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                         )
-                }                .sheet(isPresented: $showSheet) {
-                    VStack {
-                        VStack {
+                    
+                }
+                .sheet(isPresented: $showSheet) {
+                    VStack{
+                        VStack(spacing: 16) {
                             Divider()
-                                .frame(height: 3)
+                                .frame(height: 5)
                                 .frame(width: 110)
                                 .background(Color.gray)
                                 .cornerRadius(5)
                             
                             Text("Kalori Seçiniz")
-                                        .font(.system(size: 18, weight: .heavy, design: .default))
-                            
-
+                                .font(.system(size: 18, weight: .heavy, design: .default))
+                                .frame(maxWidth: .infinity ,alignment: .leading)
+    
+    
                         }
                         
                         ForEach(0..<options.count, id: \.self) { index in
-                                    Toggle(options[index], isOn: Binding(
-                                        get: {
-                                            selectedCalorieTypeIndex == index
-                                        },
-                                        set: { isSelected in
-                                            if isSelected {
-                                                selectedCalorieTypeIndex = index
-                                                isFocusedFoodName = false
-                                            } else {
-                                                selectedCalorieTypeIndex = nil
-                                                isFocusedFoodName = false
-                                            }
-                                        }
-                                    ))
+                            Toggle(options[index], isOn: Binding(
+                                get: {
+                                    selectedCalorieTypeIndex == index
+                                },
+                                set: { isSelected in
+                                    if isSelected {
+                                        selectedCalorieTypeIndex = index
+                                        selectedCalorieText = options[index]
+                                        isFocusedFoodName = false
+                                    } else {
+                                        selectedCalorieTypeIndex = nil
+                                        selectedCalorieText = "Seçiniz"
+                                        isFocusedFoodName = false
+                                    }
                                 }
-                            
+                            ))
+                        }
                         
                         Divider()
+                            .padding(1)
+                            
                         HStack{
                             
                             Button(action: rejectCalories) {
                                 HStack {
                                     Text("Vazgeç")
-                                }   .frame(maxWidth: .infinity, alignment: .center)
-                                    .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                                        .disabled(!isFoodAddedEnabled))
-                                    .foregroundColor(.orange)
-                                    .padding()
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color.orange, lineWidth: 1))
-                                
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
+                                    .disabled(!isFoodAddedEnabled))
+                                .foregroundColor(.orange)
+                                .padding()
+                                .background(Color.white)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.orange, lineWidth: 1)
+                                )
                                 Spacer()
                             }
                             Button(action: confirmCalories) {
                                 HStack {
                                     Text("Onayla")
-                                    
-                                }   .frame(maxWidth: .infinity, alignment: .center)
-                                    .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                                        .disabled(!isFoodAddedEnabled))
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.orange)
-                                    .cornerRadius(10)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
+                                    .disabled(!isFoodAddedEnabled))
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                                
                                 
                             }
                             
                         }
+                        .padding(.top,5)
                         
                         
                     }
