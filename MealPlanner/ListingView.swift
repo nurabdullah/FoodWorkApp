@@ -186,7 +186,8 @@ struct ListingView: View {
                 foodList = dataModel.foodList
                 calculateAverageCalories()
                 getSortingPreference()
-            }.toolbar {
+            }
+            .toolbar {
                 EditButton()
                 Menu("Sırala"){
                     Button {

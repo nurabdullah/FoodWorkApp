@@ -198,16 +198,20 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
-                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-)
+                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                 .foregroundColor(.white)
                 .padding()
                 .background(isFoodAddedEnabled ? Color.orange : Color.gray)
                 .cornerRadius(10)
                 .disabled(!isFoodAddedEnabled)
                 Spacer()
+           
             }
             .padding()
+            
+
+            
+          
             
             if showToastMessage {
                 ToastView(message: "Yemek başarıyla eklendi!")
