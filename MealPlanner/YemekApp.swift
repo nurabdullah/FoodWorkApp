@@ -12,9 +12,7 @@ struct YemekApp: App {
     
     @StateObject private var dataModel = DataModel()
     
-    init () {
-        print(dataModel.isLogin)
-    }
+
     
     var body: some Scene {
         WindowGroup {
@@ -28,13 +26,7 @@ struct YemekApp: App {
                             }
                         }
                     
-                    Filter()
-                        .tabItem {
-                            HStack {
-                                Image(systemName: "line.3.horizontal.decrease.circle")
-                                Text("Filter")
-                            }
-                        }
+
                     
                     ListingView()
                         .tabItem {
@@ -50,13 +42,16 @@ struct YemekApp: App {
                                 Text("Hesabım")
                             }
                         }
+                    
                 }
                 .environmentObject(dataModel)
                 .onAppear {
-                    UITabBar.appearance().backgroundColor = .lightGray
+                    UITabBar.appearance()
                     
-                }
-            } else {
+                }.accentColor(.orange)
+            
+            
+            }else {
                 UserLogin()
                     .environmentObject(dataModel)
             }

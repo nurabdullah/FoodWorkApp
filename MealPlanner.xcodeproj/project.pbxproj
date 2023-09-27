@@ -14,7 +14,6 @@
 		25ED751E2A5DCED1005EDF93 /* MealPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED751D2A5DCED1005EDF93 /* MealPlannerTests.swift */; };
 		25ED75282A5DCED1005EDF93 /* MealPlannerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED75272A5DCED1005EDF93 /* MealPlannerUITests.swift */; };
 		25ED752A2A5DCED1005EDF93 /* MealPlannerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED75292A5DCED1005EDF93 /* MealPlannerUITestsLaunchTests.swift */; };
-		25ED75372A5EA3EE005EDF93 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED75362A5EA3EE005EDF93 /* Filter.swift */; };
 		25ED75392A5EA74F005EDF93 /* ListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED75382A5EA74F005EDF93 /* ListingView.swift */; };
 		25ED753E2A5F5CFD005EDF93 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED753D2A5F5CFD005EDF93 /* DataModel.swift */; };
 		D95208262AB84B6900A09E36 /* UserLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95208252AB84B6900A09E36 /* UserLogin.swift */; };
@@ -48,7 +47,6 @@
 		25ED75232A5DCED1005EDF93 /* MealPlannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25ED75272A5DCED1005EDF93 /* MealPlannerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlannerUITests.swift; sourceTree = "<group>"; };
 		25ED75292A5DCED1005EDF93 /* MealPlannerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlannerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		25ED75362A5EA3EE005EDF93 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		25ED75382A5EA74F005EDF93 /* ListingView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ListingView.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		25ED753D2A5F5CFD005EDF93 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D95208252AB84B6900A09E36 /* UserLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogin.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
@@ -106,7 +104,6 @@
 				25ED753D2A5F5CFD005EDF93 /* DataModel.swift */,
 				D95208252AB84B6900A09E36 /* UserLogin.swift */,
 				25ED75382A5EA74F005EDF93 /* ListingView.swift */,
-				25ED75362A5EA3EE005EDF93 /* Filter.swift */,
 				25ED750E2A5DCED0005EDF93 /* ContentView.swift */,
 				25ED75102A5DCED1005EDF93 /* Assets.xcassets */,
 				25ED75122A5DCED1005EDF93 /* Preview Content */,
@@ -273,7 +270,6 @@
 				25ED750F2A5DCED0005EDF93 /* ContentView.swift in Sources */,
 				D95208262AB84B6900A09E36 /* UserLogin.swift in Sources */,
 				25ED75392A5EA74F005EDF93 /* ListingView.swift in Sources */,
-				25ED75372A5EA3EE005EDF93 /* Filter.swift in Sources */,
 				25ED750D2A5DCED0005EDF93 /* YemekApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
