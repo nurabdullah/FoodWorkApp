@@ -27,7 +27,7 @@ struct ToastView: View {
 
 struct ContentView: View {
     @State private var foodName: String = ""
-    @State private var selectedCalorieTypeIndex: Int? = 0
+    @State private var selectedCalorieTypeIndex: Int? = nil
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
     @FocusState private var isFocusedFoodName: Bool
@@ -43,9 +43,12 @@ struct ContentView: View {
     
     func confirmCalories(){
         
+        showSheet = false
+
     }
     func rejectCalories(){
-        
+        selectedCalorieTypeIndex = nil
+
     }
     
     func addItem() {
@@ -53,7 +56,7 @@ struct ContentView: View {
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: selectedCalorieTypeIndex ?? 0, time: currentDate)
             dataModel.foodList.append(food)
-            selectedCalorieTypeIndex = 0
+            selectedCalorieTypeIndex = nil
             foodName = ""
             showToastMessage = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -91,10 +94,19 @@ struct ContentView: View {
                 
                 
                 
-                Button("Kalori Seçiniz") {
+                Button(action: {
                     showSheet = true
-                }
-                .sheet(isPresented: $showSheet) {
+                }) {
+                    Text("Kalori Seçiniz")
+                        .padding(10)
+                        .foregroundColor(Color.gray)
+
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        )
+                }                .sheet(isPresented: $showSheet) {
                     VStack {
                         VStack {
                             Divider()
@@ -105,30 +117,34 @@ struct ContentView: View {
                             
                             Text("Kalori Seçiniz")
                                         .font(.system(size: 18, weight: .heavy, design: .default))
+                            
 
                         }
                         
                         ForEach(0..<options.count, id: \.self) { index in
-                            Toggle(options[index], isOn: Binding(
-                                get: {
-                                    selectedCalorieTypeIndex == index
-                                },
-                                set: { isSelected in
-                                    if isSelected {
-                                        selectedCalorieTypeIndex = index
-                                        isFocusedFoodName=false
-                                    }
+                                    Toggle(options[index], isOn: Binding(
+                                        get: {
+                                            selectedCalorieTypeIndex == index
+                                        },
+                                        set: { isSelected in
+                                            if isSelected {
+                                                selectedCalorieTypeIndex = index
+                                                isFocusedFoodName = false
+                                            } else {
+                                                selectedCalorieTypeIndex = nil
+                                                isFocusedFoodName = false
+                                            }
+                                        }
+                                    ))
                                 }
-                            ))
-                        }
+                            
+                        
                         Divider()
                         HStack{
                             
                             Button(action: rejectCalories) {
                                 HStack {
                                     Text("Vazgeç")
-                                    
-                                    
                                 }   .frame(maxWidth: .infinity, alignment: .center)
                                     .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
                                         .disabled(!isFoodAddedEnabled))
@@ -137,9 +153,8 @@ struct ContentView: View {
                                     .background(Color.white)
                                     .cornerRadius(10)
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
+                                        RoundedRectangle(cornerRadius: 10)
                                             .stroke(Color.orange, lineWidth: 1))
-                                
                                 
                                 Spacer()
                             }
