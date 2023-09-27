@@ -31,7 +31,6 @@ struct ContentView: View {
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
     @FocusState private var isFocusedFoodName: Bool
-    @FocusState private var isFocusedCaloryType: Bool
     @State private var showToastMessage = false
     @State private var showSheet = false
     @State private var sheetHeight: CGFloat = .zero
@@ -46,10 +45,13 @@ struct ContentView: View {
     
     func rejectCalories() {
         selectedCalorieTypeIndex = nil
+        showSheet = false
+
     }
     
     func addItem() {
         if isFoodAddedEnabled {
+            isFocusedFoodName = false
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: selectedCalorieTypeIndex ?? 0, time: currentDate)
             dataModel.foodList.append(food)
@@ -87,7 +89,6 @@ struct ContentView: View {
                 Button(action: {
                     showSheet = true
                     isFocusedFoodName = false
-                    isFocusedCaloryType = true
 
                 }) {
                     HStack {
@@ -105,10 +106,9 @@ struct ContentView: View {
                     .foregroundColor(Color.gray)
                     .overlay(
                         RoundedRectangle(cornerRadius: 5)
-                            .stroke(isFocusedCaloryType ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2) // Odaklandığında rengi değiştir
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 2)
                             .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                     )
-                    .focused($isFocusedCaloryType)
                     
                     
                 }
@@ -198,7 +198,8 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
-                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
+                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
+)
                 .foregroundColor(.white)
                 .padding()
                 .background(isFoodAddedEnabled ? Color.orange : Color.gray)
