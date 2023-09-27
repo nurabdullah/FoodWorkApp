@@ -9,7 +9,7 @@ struct ToastView: View {
                     .font(.largeTitle)
                     .foregroundColor(Color.orange)
                     .padding(.bottom, 10)
-                    
+                
                 Text(message)
                     .foregroundColor(Color.white)
                     .cornerRadius(10)
@@ -27,30 +27,25 @@ struct ToastView: View {
 struct ContentView: View {
     @State private var foodName: String = ""
     @State private var selectedCalorieTypeIndex: Int? = nil
+    private var options = ["Az Kalorili", "Orta Kalorili", "Çok Kalorili"]
     private var currentDate = Date()
     @EnvironmentObject private var dataModel: DataModel
     @FocusState private var isFocusedFoodName: Bool
-    private var options = ["Az Kalorili", "Orta Kalorili", "Çok Kalorili"]
+    @FocusState private var isFocusedCaloryType: Bool
     @State private var showToastMessage = false
     @State private var showSheet = false
     @State private var sheetHeight: CGFloat = .zero
-    @State private var selectedCalorieText = "Seçiniz"
-    
     
     var isFoodAddedEnabled: Bool {
-        return !foodName.isEmpty
+        return !foodName.isEmpty && selectedCalorieTypeIndex != nil
     }
     
-    
-    func confirmCalories(){
-        
+    func confirmCalories() {
         showSheet = false
-        
     }
-    func rejectCalories(){
+    
+    func rejectCalories() {
         selectedCalorieTypeIndex = nil
-        selectedCalorieText = "Seçiniz"
-        
     }
     
     func addItem() {
@@ -72,15 +67,12 @@ struct ContentView: View {
             VStack(alignment: .leading, spacing: 30) {
                 if let firstItem = dataModel.loginMyArray.first {
                     HStack {
-                        
                         Text("Hoşgeldin " + firstItem)
                             .font(.system(size: 25))
-                        
                     }
                 }
                 
                 VStack(alignment: .leading, spacing: 12) {
-                    
                     TextField("Yemek adı", text: $foodName)
                         .textFieldStyle(PlainTextFieldStyle())
                         .padding(10)
@@ -94,25 +86,34 @@ struct ContentView: View {
                 
                 Button(action: {
                     showSheet = true
+                    isFocusedFoodName = false
+                    isFocusedCaloryType = true
+
                 }) {
-                    HStack{
+                    HStack {
                         Text("Kalori Seçiniz")
-                           Spacer()
-                        Text(selectedCalorieText)
-
-
-                    }.frame(maxWidth: .infinity)
-                        .padding(10)
-                        .foregroundColor(Color.gray)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
+                        Spacer()
+                        if let selectedCalorieIndex = selectedCalorieTypeIndex {
+                            Text(options[selectedCalorieIndex])
+                        } else {
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(10)
+                    .foregroundColor(Color.gray)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(isFocusedCaloryType ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2) // Odaklandığında rengi değiştir
+                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                    )
+                    .focused($isFocusedCaloryType)
+                    
                     
                 }
                 .sheet(isPresented: $showSheet) {
-                    VStack{
+                    VStack {
                         VStack(spacing: 16) {
                             Divider()
                                 .frame(height: 5)
@@ -122,9 +123,7 @@ struct ContentView: View {
                             
                             Text("Kalori Seçiniz")
                                 .font(.system(size: 18, weight: .heavy, design: .default))
-                                .frame(maxWidth: .infinity ,alignment: .leading)
-    
-    
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
                         ForEach(0..<options.count, id: \.self) { index in
@@ -135,11 +134,9 @@ struct ContentView: View {
                                 set: { isSelected in
                                     if isSelected {
                                         selectedCalorieTypeIndex = index
-                                        selectedCalorieText = options[index]
                                         isFocusedFoodName = false
                                     } else {
                                         selectedCalorieTypeIndex = nil
-                                        selectedCalorieText = "Seçiniz"
                                         isFocusedFoodName = false
                                     }
                                 }
@@ -148,9 +145,8 @@ struct ContentView: View {
                         
                         Divider()
                             .padding(1)
-                            
-                        HStack{
-                            
+                        
+                        HStack {
                             Button(action: rejectCalories) {
                                 HStack {
                                     Text("Vazgeç")
@@ -179,14 +175,9 @@ struct ContentView: View {
                                 .padding()
                                 .background(Color.orange)
                                 .cornerRadius(10)
-                                
-                                
                             }
-                            
                         }
-                        .padding(.top,5)
-                        
-                        
+                        .padding(.top, 5)
                     }
                     .padding()
                     .overlay {
@@ -207,14 +198,13 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
-                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                    .disabled(!isFoodAddedEnabled))
+                .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                 .foregroundColor(.white)
                 .padding()
                 .background(isFoodAddedEnabled ? Color.orange : Color.gray)
                 .cornerRadius(10)
+                .disabled(!isFoodAddedEnabled)
                 Spacer()
-                
             }
             .padding()
             
@@ -232,11 +222,5 @@ struct InnerHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = .zero
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
