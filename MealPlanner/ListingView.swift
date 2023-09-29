@@ -11,6 +11,8 @@ struct ListingView: View {
     @State private var calorie: Double = 0
     @State private var selectedItem: Food? = nil
     @State private var isShowingAlert: Bool = false
+    @State private var isSearching = false
+    @State private var isKeyboardVisible = false
     
     
     public func calculateAverageCalories() -> Color{
@@ -194,6 +196,16 @@ struct ListingView: View {
                 TextField("Arama", text: $searchTerm)
                     .textFieldStyle(PlainTextFieldStyle())
                     .padding(10)
+                    .onTapGesture {
+                        isSearching = true
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                        isKeyboardVisible = true
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                        isSearching = false
+                        isKeyboardVisible = false
+                    }
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.2), lineWidth: 2)
@@ -203,14 +215,19 @@ struct ListingView: View {
                         HStack {
                             Spacer()
                             Image(systemName: searchTerm.isEmpty ? "magnifyingglass" : "magnifyingglass")
-                                .foregroundColor(!searchTerm.isEmpty ? .orange : .gray)
+                                .foregroundColor(searchTerm.isEmpty && !isSearching ? .gray : .orange)
                                 .padding(.trailing, 10)
+                                .onTapGesture {
+                                    isSearching = true
+                                }
+
                         }
                     )
                 
                 Spacer()
                 
-                if searchTerm.isEmpty {
+                
+                if !isSearching {
                     Menu("Sırala") {
                         Button {
                             sortFoodListByName(isCurrentAsceding: !isAscending)
@@ -233,6 +250,16 @@ struct ListingView: View {
                             Label("Reset", systemImage: "gobackward")
                         }
                     }
+                } else {
+                    Button("Vazgeç") {
+                        isSearching = false
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
+                }
+                
+                
+                if searchTerm.isEmpty {
+                    
                 }
             }
             
