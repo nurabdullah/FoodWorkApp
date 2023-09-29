@@ -158,7 +158,6 @@ struct ListingView: View {
         return text
     }
     var body: some View {
-        NavigationView {
             VStack {
                 HStack {
                     Text("Liste")
@@ -215,19 +214,17 @@ struct ListingView: View {
                 
                 List {
                     ForEach(foodList, id: \.self) { item in
-                        Section {
-                            HStack {
+                        HStack {
                                 Rectangle()
-                                    .frame(width: 15, height: 45)
+                                    .frame(width: 12, height: 45)
                                     .foregroundColor(getBorderColorForCaloryType(item.caloryType))
-                                
                                 Text(truncateText(item.foodName, maxLength: 10))
-                                Spacer()
                                 Spacer()
                                 Text("\(formatDate(date: item.time))")
                                     .font(.system(size: 12))
                             }
-                        }
+
+                        
                     }
                     .onDelete(perform: deleteItem)
                 }
@@ -254,11 +251,12 @@ struct ListingView: View {
                 .background(Color.orange)
                 .foregroundColor(Color.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(width: 435, height: 45)
+
             }
             .padding()
         }
         
-    }
 }
 
 
