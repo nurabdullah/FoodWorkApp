@@ -267,14 +267,17 @@ struct ListingView: View {
             List {
                 ForEach(foodList, id: \.self) { item in
                     HStack {
-                        Rectangle()
-                            .frame(width: 12, height: 45)
-                            .foregroundColor(getBorderColorForCaloryType(item.caloryType))
-                        Text(truncateText(item.foodName, maxLength: 15))
-                        Spacer()
-                        Text("\(formatDate(date: item.time))")
-                            .font(.system(size: 12))
-                    }
+                            Rectangle()
+                                .frame(width: 6, height: 45)
+                                .foregroundColor(getBorderColorForCaloryType(item.caloryType))
+                            
+                            Text(truncateText(item.foodName, maxLength: 15))
+                            
+                            Spacer()
+                            
+                            Text("\(formatDate(date: item.time))")
+                                .font(.system(size: 12))
+                        }
                     .onTapGesture {
                         selectedItem = item
                         isShowingAlert = true
