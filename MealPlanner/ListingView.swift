@@ -36,9 +36,7 @@ struct ListingView: View {
             return Color.orange
             
         }
-        
-        //        return averageCalorieText
-        
+                
     }
     
     func calculateTextForCaloryType(_ caloryType: Int) -> String {
