@@ -192,7 +192,7 @@ struct ListingView: View {
             .padding(.top, 5)
             
             HStack {
-                TextField("Arama", text: $searchTerm)
+                TextField("Ara", text: $searchTerm)
                     .textFieldStyle(PlainTextFieldStyle())
                     .padding(10)
                     .onTapGesture {
@@ -215,11 +215,10 @@ struct ListingView: View {
                             Spacer()
                             Image(systemName: searchTerm.isEmpty ? "magnifyingglass" : "magnifyingglass")
                                 .foregroundColor(searchTerm.isEmpty && !isSearching ? .gray : .orange)
-                                .padding(.trailing, 10)
+                                .padding(.trailing, 1)
                                 .onTapGesture {
                                     isSearching = true
                                 }
-
                         }
                     )
                 
@@ -246,7 +245,7 @@ struct ListingView: View {
                         Button {
                             resetList()
                         } label: {
-                            Label("Reset", systemImage: "gobackward")
+                            Label("Sıfırla", systemImage: "gobackward")
                         }
                     }
                 } else {
