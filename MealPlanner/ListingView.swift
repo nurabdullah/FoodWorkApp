@@ -9,24 +9,47 @@ struct ListingView: View {
     @State private var searchTerm: String = ""
     @State private var averageCalorieText: String = ""
     @State private var calorie: Double = 0
+    @State private var selectedItem: Food? = nil
+    @State private var isShowingAlert: Bool = false
     
     
-    public func calculateAverageCalories() -> String{
+    public func calculateAverageCalories() -> Color{
         let totalCalories = foodList.reduce(0) { $0 + $1.caloryType }
         calorie = Double(totalCalories) / Double(foodList.count)
         averageCalorieText = ""
         if calorie < 0.7 {
             averageCalorieText = "Düşük düzeyde kalorili bir liste."
+            return Color.green
+            
         } else if calorie >= 0.7 && calorie < 1.5  {
             averageCalorieText = "Orta düzeyde kalorili bir liste."
+            return Color.blue
+            
         } else if calorie >= 1.5 && calorie < 10  {
             averageCalorieText = "Yüksek düzeyde kalorili bir liste."
+            return Color.red
+            
         }else{
             averageCalorieText = "Liste boş yemek yeme vakti."
+            return Color.orange
+            
         }
         
-        return averageCalorieText
+        //        return averageCalorieText
         
+    }
+    
+    func calculateTextForCaloryType(_ caloryType: Int) -> String {
+        switch caloryType {
+        case 0:
+            return "Düşük"
+        case 1:
+            return "Orta"
+        case 2:
+            return "Yüksek"
+        default:
+            return ""
+        }
     }
     
     
@@ -158,106 +181,119 @@ struct ListingView: View {
         return text
     }
     var body: some View {
-            VStack {
-                HStack {
-                    Text("Liste")
-                        .font(.system(size: 25))
-                    Spacer()
-                }
-                .padding(.top, 5)
-                
-                HStack {
-                    TextField("Arama", text: $searchTerm)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .overlay(
-                            HStack {
-                                Spacer()
-                                Image(systemName: searchTerm.isEmpty ? "magnifyingglass" : "magnifyingglass")
-                                    .foregroundColor(!searchTerm.isEmpty ? .orange : .gray)
-                                    .padding(.trailing, 10)
-                            }
-                        )
-                    
-                    Spacer()
-                    
-                    if searchTerm.isEmpty {
-                        Menu("Sırala") {
-                            Button {
-                                sortFoodListByName(isCurrentAsceding: !isAscending)
-                            } label: {
-                                Label("Ad", systemImage: "textformat.alt")
-                            }
-                            Button {
-                                sortFoodListByDate(isCurrentAsceding: !isAscending)
-                            } label: {
-                                Label("Tarih", systemImage: "arrow.up.and.down.text.horizontal")
-                            }
-                            Button {
-                                sortFoodListByCaloryType(isCurrentAsceding: !isAscending)
-                            } label: {
-                                Label("Kalori", systemImage: "greaterthan.circle.fill")
-                            }
-                            Button {
-                                resetList()
-                            } label: {
-                                Label("Reset", systemImage: "gobackward")
-                            }
-                        }
-                    }
-                }
-                
-                List {
-                    ForEach(foodList, id: \.self) { item in
+        
+        VStack {
+            HStack {
+                Text("Liste")
+                    .font(.system(size: 25))
+                Spacer()
+            }
+            .padding(.top, 5)
+            
+            HStack {
+                TextField("Arama", text: $searchTerm)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .padding(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                    )
+                    .overlay(
                         HStack {
-                                Rectangle()
-                                    .frame(width: 12, height: 45)
-                                    .foregroundColor(getBorderColorForCaloryType(item.caloryType))
-                                Text(truncateText(item.foodName, maxLength: 10))
-                                Spacer()
-                                Text("\(formatDate(date: item.time))")
-                                    .font(.system(size: 12))
-                            }
-
-                        
-                    }
-                    .onDelete(perform: deleteItem)
-                }
-                .onAppear {
-                    foodList = dataModel.foodList
-                    calculateAverageCalories()
-                    getSortingPreference()
-                }
-                
-                .listStyle(PlainListStyle())
-                .environment(\.horizontalSizeClass, .compact)
-                .onChange(of: searchTerm) { newValue in
-                    performSearch(with: newValue)
-                }
+                            Spacer()
+                            Image(systemName: searchTerm.isEmpty ? "magnifyingglass" : "magnifyingglass")
+                                .foregroundColor(!searchTerm.isEmpty ? .orange : .gray)
+                                .padding(.trailing, 10)
+                        }
+                    )
                 
                 Spacer()
                 
-                HStack {
-                    Text(averageCalorieText)
-                        .font(.headline)
-                        .padding()
-                    Spacer()
+                if searchTerm.isEmpty {
+                    Menu("Sırala") {
+                        Button {
+                            sortFoodListByName(isCurrentAsceding: !isAscending)
+                        } label: {
+                            Label("Ad", systemImage: "textformat.alt")
+                        }
+                        Button {
+                            sortFoodListByDate(isCurrentAsceding: !isAscending)
+                        } label: {
+                            Label("Tarih", systemImage: "arrow.up.and.down.text.horizontal")
+                        }
+                        Button {
+                            sortFoodListByCaloryType(isCurrentAsceding: !isAscending)
+                        } label: {
+                            Label("Kalori", systemImage: "greaterthan.circle.fill")
+                        }
+                        Button {
+                            resetList()
+                        } label: {
+                            Label("Reset", systemImage: "gobackward")
+                        }
+                    }
                 }
-                .background(Color.orange)
-                .foregroundColor(Color.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .frame(width: 435, height: 45)
-
             }
-            .padding()
+            
+            List {
+                ForEach(foodList, id: \.self) { item in
+                    HStack {
+                        Rectangle()
+                            .frame(width: 12, height: 45)
+                            .foregroundColor(getBorderColorForCaloryType(item.caloryType))
+                        Text(truncateText(item.foodName, maxLength: 15))
+                        Spacer()
+                        Text("\(formatDate(date: item.time))")
+                            .font(.system(size: 12))
+                    }
+                    .onTapGesture {
+                        selectedItem = item
+                        isShowingAlert = true
+                    }
+                    
+                }
+                .onDelete(perform: deleteItem)
+            }
+            .onAppear {
+                foodList = dataModel.foodList
+                calculateAverageCalories()
+                getSortingPreference()
+            }
+            
+            .listStyle(PlainListStyle())
+            .environment(\.horizontalSizeClass, .compact)
+            .onChange(of: searchTerm) { newValue in
+                performSearch(with: newValue)
+            }
+            
+            Spacer()
+            
+            HStack {
+                Text(averageCalorieText)
+                    .font(.headline)
+                    .padding()
+                Spacer()
+            }
+            .background(calculateAverageCalories())
+            .foregroundColor(Color.white)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(width: 435, height: 45)
+            
         }
-        
+        .alert(isPresented: $isShowingAlert) {
+            Alert(
+                title: Text(selectedItem?.foodName ?? ""),
+                message: Text("Kalori Seviyesi: \(calculateTextForCaloryType(selectedItem?.caloryType ?? 0))"),
+                dismissButton: .default(Text("Tamam"))
+            )
+        }
+        .padding()
+    }
 }
+
+
+
 
 
 
