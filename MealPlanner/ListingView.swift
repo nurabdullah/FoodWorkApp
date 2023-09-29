@@ -271,8 +271,7 @@ struct ListingView: View {
                             
                             Text("\(formatDate(date: item.time))")
                                 .font(.system(size: 12))
-                    }.frame(width: 405)
-
+                    }
                     .onTapGesture {
                         selectedItem = item
                         isShowingAlert = true
@@ -280,7 +279,8 @@ struct ListingView: View {
                     
                 }
                 .onDelete(perform: deleteItem)
-            }
+            } .padding(.leading, -37)
+                .padding(.trailing, -35)
             .onAppear {
                 foodList = dataModel.foodList
                 calculateAverageCalories()
