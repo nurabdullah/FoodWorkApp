@@ -253,6 +253,7 @@ struct ListingView: View {
                 } else {
                     Button("Vazgeç") {
                         isSearching = false
+                        searchTerm = ""
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
                 }
