@@ -258,10 +258,6 @@ struct ListingView: View {
                     }
                 }
                 
-                
-                if searchTerm.isEmpty {
-                    
-                }
             }
             
             List {
@@ -277,7 +273,8 @@ struct ListingView: View {
                             
                             Text("\(formatDate(date: item.time))")
                                 .font(.system(size: 12))
-                        }
+                    }.frame(width: 405)
+
                     .onTapGesture {
                         selectedItem = item
                         isShowingAlert = true
