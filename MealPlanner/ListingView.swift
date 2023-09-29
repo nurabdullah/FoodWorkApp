@@ -183,6 +183,7 @@ struct ListingView: View {
     var body: some View {
         
         VStack {
+            VStack{
             HStack {
                 Text("Liste")
                     .font(.system(size: 25))
@@ -255,14 +256,16 @@ struct ListingView: View {
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
                 }
+                }
                 
-            }
+                
+            }.padding()
             
             List {
                 ForEach(foodList, id: \.self) { item in
                     HStack {
                             Rectangle()
-                                .frame(width: 6, height: 45)
+                                .frame(width: 4, height: 60)
                                 .foregroundColor(getBorderColorForCaloryType(item.caloryType))
                             
                             Text(truncateText(item.foodName, maxLength: 15))
@@ -279,8 +282,8 @@ struct ListingView: View {
                     
                 }
                 .onDelete(perform: deleteItem)
-            } .padding(.leading, -37)
-                .padding(.trailing, -35)
+                .listRowInsets(EdgeInsets())
+            }
             .onAppear {
                 foodList = dataModel.foodList
                 calculateAverageCalories()
@@ -304,7 +307,7 @@ struct ListingView: View {
             .background(calculateAverageCalories())
             .foregroundColor(Color.white)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(width: 435, height: 45)
+            .frame(width: .infinity, height: 45)
             
         }
         .alert(isPresented: $isShowingAlert) {
@@ -314,7 +317,6 @@ struct ListingView: View {
                 dismissButton: .default(Text("Tamam"))
             )
         }
-        .padding()
     }
 }
 
