@@ -4,50 +4,46 @@ import Foundation
 
 struct ListingView: View {
     @EnvironmentObject private var dataModel : DataModel
-    @State private var isAsceding: Bool = true;
+    @State private var isAscending: Bool = true;
     @State var foodList : [Food] = []
     @State private var searchTerm: String = ""
-    @State private var resultText: String = ""
+    @State private var averageCalorieText: String = ""
     @State private var calorie: Double = 0
     
     
     public func calculateAverageCalories() -> String{
         let totalCalories = foodList.reduce(0) { $0 + $1.caloryType }
         calorie = Double(totalCalories) / Double(foodList.count)
-        resultText = ""
+        averageCalorieText = ""
         if calorie < 0.7 {
-            resultText = "Düşük düzeyde kalorili bir liste."
+            averageCalorieText = "Düşük düzeyde kalorili bir liste."
         } else if calorie >= 0.7 && calorie < 1.5  {
-            resultText = "Orta düzeyde kalorili bir liste."
+            averageCalorieText = "Orta düzeyde kalorili bir liste."
         } else if calorie >= 1.5 && calorie < 10  {
-            resultText = "Yüksek düzeyde kalorili bir liste."
+            averageCalorieText = "Yüksek düzeyde kalorili bir liste."
         }else{
-            resultText = "Liste boş yemek yeme vakti."
+            averageCalorieText = "Liste boş yemek yeme vakti."
         }
         
-        return resultText
+        return averageCalorieText
         
     }
     
     
     
-    func caloryCheck(erc: Int)->String{
-        switch erc{
+    func getBorderColorForCaloryType(_ caloryType: Int) -> Color {
+        switch caloryType {
         case 0:
-            return "Az Kalorili"
-            
-            
+            return Color.green
         case 1:
-            return  "Orta Kalorili"
-            
+            return Color.blue
         case 2:
-            return  "Çok kalorili"
-            
+            return Color.red
         default:
-            return ""
+            return Color.orange
         }
-        
     }
+    
     private func formatDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "d MMM, HH:mm "
@@ -72,19 +68,19 @@ struct ListingView: View {
         
         if array.count > 1 {
             
-            isAsceding = Bool(array[1]) ?? false
+            isAscending = Bool(array[1]) ?? false
             
             switch array[0]{
                 
             case "name":
-                sortFoodListByName(isCurrentAsceding: isAsceding)
+                sortFoodListByName(isCurrentAsceding: isAscending)
                 break
             case "date":
-                sortFoodListByDate(isCurrentAsceding: isAsceding)
+                sortFoodListByDate(isCurrentAsceding: isAscending)
                 break
             case "calory":
-                sortFoodListByCaloryType(isCurrentAsceding: isAsceding)
-        
+                sortFoodListByCaloryType(isCurrentAsceding: isAscending)
+                
             default:
                 break
             }
@@ -95,41 +91,41 @@ struct ListingView: View {
     
     
     private  func sortFoodListByDate(isCurrentAsceding: Bool){
-        isAsceding = isCurrentAsceding
+        isAscending = isCurrentAsceding
         
-        if !isAsceding {
+        if !isAscending {
             foodList = foodList.sorted(by:{$1.time < $0.time})
         }
         else {
             foodList = foodList.sorted(by:{$1.time > $0.time})
         }
         
-        saveSortingPreference(sortKey: ["date",String(isAsceding)])
+        saveSortingPreference(sortKey: ["date",String(isAscending)])
         
     }
     
     private func sortFoodListByName(isCurrentAsceding:Bool){
-        isAsceding = isCurrentAsceding
+        isAscending = isCurrentAsceding
         
-        if !isAsceding {
+        if !isAscending {
             foodList = foodList.sorted(by:{$0.foodName < $1.foodName})
         }
         else {
             foodList = foodList.sorted(by:{$0.foodName > $1.foodName})
         }
-        saveSortingPreference(sortKey: ["name",String(isAsceding)])
+        saveSortingPreference(sortKey: ["name",String(isAscending)])
         
     }
     private func sortFoodListByCaloryType(isCurrentAsceding:Bool){
-        isAsceding = isCurrentAsceding
+        isAscending = isCurrentAsceding
         
-        if !isAsceding {
+        if !isAscending {
             foodList = foodList.sorted(by:{$0.caloryType < $1.caloryType})
         }
         else {
             foodList = foodList.sorted(by:{$0.caloryType > $1.caloryType})
         }
-        saveSortingPreference(sortKey: ["calory",String(isAsceding)])
+        saveSortingPreference(sortKey: ["calory",String(isAscending)])
         
     }
     
@@ -154,76 +150,115 @@ struct ListingView: View {
         }
     }
     
-    
+    func truncateText(_ text: String, maxLength: Int) -> String {
+        if text.count > maxLength {
+            let truncatedIndex = text.index(text.startIndex, offsetBy: maxLength)
+            return String(text[..<truncatedIndex]) + "..."
+        }
+        return text
+    }
     var body: some View {
-        NavigationView{
-            
-            List{
-                Text(resultText)
-                ForEach(foodList, id: \.self){ item in
-                    Section{
-                        HStack{
-                           
-                            Text(item.foodName)
-                            
-                            Spacer()
-                            Text("\(formatDate(date:item.time))")
-                                .font(.system(size: 12))
-//                            Spacer()
-//                            Text("\(caloryCheck(erc:item.caloryType))")
-                            
+        NavigationView {
+            VStack {
+                HStack {
+                    Text("Liste")
+                        .font(.system(size: 25))
+                    Spacer()
+                }
+                .padding(.top, 5)
+                
+                HStack {
+                    TextField("Arama", text: $searchTerm)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        )
+                        .overlay(
+                            HStack {
+                                Spacer()
+                                Image(systemName: searchTerm.isEmpty ? "magnifyingglass" : "magnifyingglass")
+                                    .foregroundColor(!searchTerm.isEmpty ? .orange : .gray)
+                                    .padding(.trailing, 10)
+                            }
+                        )
+                    
+                    Spacer()
+                    
+                    if searchTerm.isEmpty {
+                        Menu("Sırala") {
+                            Button {
+                                sortFoodListByName(isCurrentAsceding: !isAscending)
+                            } label: {
+                                Label("Ad", systemImage: "textformat.alt")
+                            }
+                            Button {
+                                sortFoodListByDate(isCurrentAsceding: !isAscending)
+                            } label: {
+                                Label("Tarih", systemImage: "arrow.up.and.down.text.horizontal")
+                            }
+                            Button {
+                                sortFoodListByCaloryType(isCurrentAsceding: !isAscending)
+                            } label: {
+                                Label("Kalori", systemImage: "greaterthan.circle.fill")
+                            }
+                            Button {
+                                resetList()
+                            } label: {
+                                Label("Reset", systemImage: "gobackward")
+                            }
                         }
                     }
-                    
-                }.onDelete(perform: deleteItem)
-                
-            }
-            .onAppear{
-                foodList = dataModel.foodList
-                calculateAverageCalories()
-                getSortingPreference()
-            }
-            .toolbar {
-                EditButton()
-                Menu("Sırala"){
-                    Button {
-                        sortFoodListByName(isCurrentAsceding: !isAsceding)
-                    } label: {
-                        Label("Ad", systemImage: "textformat.alt" )
-                    }
-                    Button {
-                        sortFoodListByDate(isCurrentAsceding: !isAsceding)
-                    } label: {
-                        Label("Tarih", systemImage: "arrow.up.and.down.text.horizontal" )
-                    }
-                    Button {
-                        sortFoodListByCaloryType(isCurrentAsceding: !isAsceding)
-                    } label: {
-                        Label("Kalori", systemImage: "greaterthan.circle.fill" )
-                    }
-                    Button {
-                        resetList()
-                    } label: {
-                        Label("Reset", systemImage: "gobackward" )
-                    }
-                    
                 }
                 
+                List {
+                    ForEach(foodList, id: \.self) { item in
+                        Section {
+                            HStack {
+                                Rectangle()
+                                    .frame(width: 15, height: 45)
+                                    .foregroundColor(getBorderColorForCaloryType(item.caloryType))
+                                
+                                Text(truncateText(item.foodName, maxLength: 10))
+                                Spacer()
+                                Spacer()
+                                Text("\(formatDate(date: item.time))")
+                                    .font(.system(size: 12))
+                            }
+                        }
+                    }
+                    .onDelete(perform: deleteItem)
+                }
+                .onAppear {
+                    foodList = dataModel.foodList
+                    calculateAverageCalories()
+                    getSortingPreference()
+                }
                 
-            }
-            .listStyle(.plain)
-            .navigationTitle("Kalori Kontrol")
-            .listStyle(InsetGroupedListStyle())
-            .environment(\.horizontalSizeClass, .compact)
-            .searchable(text: $searchTerm)
-            .onChange(of: searchTerm) { newValue in
-                performSearch(with: newValue)
+                .listStyle(PlainListStyle())
+                .environment(\.horizontalSizeClass, .compact)
+                .onChange(of: searchTerm) { newValue in
+                    performSearch(with: newValue)
+                }
                 
+                Spacer()
+                
+                HStack {
+                    Text(averageCalorieText)
+                        .font(.headline)
+                        .padding()
+                    Spacer()
+                }
+                .background(Color.orange)
+                .foregroundColor(Color.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding()
         }
         
     }
-    
 }
 
 
