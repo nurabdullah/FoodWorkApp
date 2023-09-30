@@ -24,7 +24,6 @@ struct TabBarView: View {
                     }
                 
                 
-                
                 ListingView()
                     .tabItem {
                         Label("Listele" , systemImage: "list.clipboard")

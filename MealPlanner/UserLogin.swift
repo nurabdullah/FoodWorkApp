@@ -9,11 +9,6 @@ struct UserLogin: View {
     @FocusState private var isFocusedUserName: Bool
     @FocusState private var isFocusedPassword: Bool
     
-    
-    
-    
-    
-    
     var isLoginEnabled: Bool {
         return !userName.isEmpty && checkBoxOn
     }
@@ -24,6 +19,7 @@ struct UserLogin: View {
             dataModel.loginMyArray.append(userName)
             userName = ""
         }
+
     }
     
     func userDelete() {
@@ -33,17 +29,14 @@ struct UserLogin: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            
-            if dataModel.isLogin {
+            if dataModel.isLogin{
                 Text("Active User  \(dataModel.loginMyArray.first ?? "")")
                     .font(.headline)
                     .padding()
                 
-                
                 Button("Logout", action: userDelete)
                     .frame(maxWidth: .infinity, alignment: .center)
-                
-            } else {
+            }else{
                 VStack(alignment: .leading, spacing: 20) {
                     Section(header: Text("Giriş")
                         .font(.system(size: 25, weight: .medium))) {
@@ -54,9 +47,7 @@ struct UserLogin: View {
                                     RoundedRectangle(cornerRadius: 5)
                                         .stroke(isFocusedUserName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
                                         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                                )
-                                .focused($isFocusedUserName)
-                            
+                                ).focused($isFocusedUserName)
                             ZStack {
                                 if isPasswordVisible {
                                     TextField("Şifre", text: $password)
@@ -68,74 +59,66 @@ struct UserLogin: View {
                                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                                         )
                                         .focused($isFocusedPassword)
-                                    
-                                    
-                                } else {
+                                }else{
                                     SecureField("Şifre", text: $password)
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .padding(10)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 5)
-                                                .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                                        )
-                                        .focused($isFocusedPassword)
-                                    
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                                    )
+                                    .focused($isFocusedPassword)
                                 }
-                                
                                 HStack {
                                     Spacer()
                                     Button(action: {
                                         isPasswordVisible.toggle()
                                         isFocusedUserName = false
-                                        
-                                    })
-                                    {
-                                        
+                                    }){
                                         Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                                            .foregroundColor(.gray)
+                                        .foregroundColor(.gray)
                                     }
-                                    .padding(.trailing, 15)
-                                    .buttonStyle(BorderlessButtonStyle())
-                                }
-                            }
-                            
-                            HStack {
+                                    .padding(.trailing,15)
+                                    .buttonStyle(BorderedButtonStyle())
                                 
-                                Toggle(isOn: $checkBoxOn) {
-                                    Text("KVKK metnini okudum kabul ediyorum.")
-                                        .font(.system(size: 15, weight: .medium))
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                
-                            }
-                            
-                            Button(action: addUser) {
-                                HStack {
-                                    
-                                    Image(systemName: "rectangle.portrait.and.arrow.right.fill")
-                                        .foregroundColor(.white)
-                                    Text("Login")
-                                        .foregroundColor(.white)
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                                .disabled(!isLoginEnabled))
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(isLoginEnabled ? Color.orange : Color.gray)
-                            .cornerRadius(10)
                             
-                            
-                        }
-                }
-            }
             
+                        }
+                    HStack{
+                        Toggle(isOn: $checkBoxOn) {
+                            Text("KVKK metnini okudum kabul ediyorum.")
+                                .font(.system(size: 15, weight: .medium))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    Button(action: addUser) {
+                        HStack {
+                            Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                                .foregroundColor(.white)
+                            Text("Login")
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
+                        .disabled(!isLoginEnabled))
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(isLoginEnabled ? Color.orange : Color.gray)
+                    .cornerRadius(10)
+                       Spacer()
+
+                }
+                .padding(25)
+            }
+               
+                
         }
-        .padding(25)
-        Spacer()
     }
+    
 }
 
 struct UserLogin_Previews: PreviewProvider {
