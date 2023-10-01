@@ -127,8 +127,13 @@ struct ContentView: View {
                         }
                         
                         ForEach(0..<options.count, id: \.self) { index in
-                            Toggle(options[index], isOn: Binding(
-                                get: {
+                                  HStack {
+                                      Rectangle()
+                                          .frame(width: 4, height: 20)
+                                          .foregroundColor(index == 0 ? .green : (index == 1 ? .blue : .red))
+                                      
+                                      Toggle(options[index], isOn: Binding(
+                                          get: {
                                     selectedCalorieTypeIndex == index
                                 },
                                 set: { isSelected in
@@ -142,6 +147,7 @@ struct ContentView: View {
                                 }
                             ))
                         }
+                    }
                         
                         Divider()
                             .padding(1)
