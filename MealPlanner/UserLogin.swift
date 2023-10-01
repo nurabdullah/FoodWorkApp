@@ -98,17 +98,19 @@ struct UserLogin: View {
                         HStack {
                             Image(systemName: "rectangle.portrait.and.arrow.right.fill")
                                 .foregroundColor(.white)
-                            Text("Login")
+                            Text("Giriş Yap")
                                 .foregroundColor(.white)
                         }
-                    }
+                    
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                        .disabled(!isLoginEnabled))
+                    .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                     .foregroundColor(.white)
                     .padding()
                     .background(isLoginEnabled ? Color.orange : Color.gray)
                     .cornerRadius(10)
+                     
+                    }
+                    .disabled(!isLoginEnabled)
                        Spacer()
 
                 }
