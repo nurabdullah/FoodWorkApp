@@ -92,7 +92,12 @@ struct UserLogin: View {
                             Text("KVKK metnini okudum kabul ediyorum.")
                                 .font(.system(size: 15, weight: .medium))
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                            
                         }
+                    }
+                    .onChange(of: checkBoxOn) { _ in
+                            isFocusedPassword = false
+                        
                     }
                     Button(action: addUser) {
                         HStack {
