@@ -97,6 +97,7 @@ struct UserLogin: View {
                     }
                     .onChange(of: checkBoxOn) { _ in
                             isFocusedPassword = false
+                            isFocusedUserName = false
                         
                     }
                     Button(action: addUser) {
