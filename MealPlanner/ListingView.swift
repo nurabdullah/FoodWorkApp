@@ -262,6 +262,7 @@ struct ListingView: View {
             
             List {
                 ForEach(foodList, id: \.self) { item in
+                    
                     HStack {
                             Rectangle()
                                 .frame(width: 4, height: 60)
@@ -273,6 +274,16 @@ struct ListingView: View {
                             
                             Text("\(formatDate(date: item.time))")
                                 .font(.system(size: 12))
+                        
+                                .swipeActions {
+                                    Button(action: {
+//                                        deleteItem(at: IndexSet([foodList.firstIndex(of: item)!]))
+                                        
+                                    }) {
+                                        Text("Sil")
+                                    }
+                                    .tint(.red)
+                                }
                     }
                     .onTapGesture {
                         selectedItem = item
@@ -280,7 +291,7 @@ struct ListingView: View {
                     }
                     
                 }
-                .onDelete(perform: deleteItem)
+//                .onDelete(perform: deleteItem)
                 .listRowInsets(EdgeInsets())
             }
             .onAppear {
