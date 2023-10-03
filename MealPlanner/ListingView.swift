@@ -277,7 +277,7 @@ struct ListingView: View {
                         
 //                                .swipeActions {
 //                                    Button(action: {
-////                                        deleteItem(at: IndexSet([foodList.firstIndex(of: item)!]))
+//                   deleteItem(at: IndexSet([foodList.firstIndex(of: item)!]))
 //                                        
 //                                    }) {
 //                                        Text("Sil")
