@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ToastView: View {
+struct ToastContentView: View {
     var message: String
     var body: some View {
         ZStack {
@@ -221,7 +221,7 @@ struct ContentView: View {
           
             
             if showToastMessage {
-                ToastView(message: "Yemek başarıyla eklendi!")
+                ToastContentView(message: "Yemek başarıyla eklendi!")
                     .onDisappear {
                         showToastMessage = false
                     }
