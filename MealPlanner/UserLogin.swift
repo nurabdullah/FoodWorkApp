@@ -26,17 +26,85 @@ struct UserLogin: View {
         dataModel.loginMyArray.removeAll()
         dataModel.isLogin = false
     }
+    func changePassword() {
+       
+    }
+    
+    func appSetting(){
+        
+        
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            if dataModel.isLogin{
-                Text("Active User  \(dataModel.loginMyArray.first ?? "")")
-                    .font(.headline)
-                    .padding()
-                
-                Button("Logout", action: userDelete)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }else{
+            if dataModel.isLogin {
+                NavigationStack{
+                    List {
+                        Section{
+                            Button(action: changePassword) {
+                                HStack {
+                                    Text("Şifreyi Değiştir")
+                                    Spacer()
+                                    Image(systemName: "greaterthan")
+                                }
+                            }
+                            
+                            Button(action: userDelete) {
+                                HStack {
+                                    Text("Hesabı Sil")
+                                    Spacer()
+                                    Image(systemName: "greaterthan")
+                                }
+                            }
+                            
+                            Button(action: userDelete) {
+                                HStack {
+                                    Text("Çıkış Yap")
+                                    Spacer()
+                                    Image(systemName: "greaterthan")
+                                }
+                            }
+                        }
+                        Section{
+                            
+                            Button(action: appSetting) {
+                                HStack {
+                                    Text("Ayarlar")
+                                    Spacer()
+                                    Image(systemName: "greaterthan")
+                                }
+                            }
+                            Button(action: appSetting) {
+                                HStack {
+                                    Text("Uygulama Hakkında")
+                                    Spacer()
+                                    Image(systemName: "greaterthan")
+                                }
+                            }
+                            
+                        }
+                        
+                    } .navigationTitle("")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                HStack {
+                                    Image(systemName: "person.fill")
+                                        .font(.system(size: 25))
+
+                                    Text(dataModel.loginMyArray.first ?? "")
+                                        .font(.system(size: 25))
+                                    Spacer()
+
+                                }
+                            }
+                        }
+                    
+                        .listStyle(.insetGrouped)
+                    
+                    }
+
+            } else{
+
                 VStack(alignment: .leading, spacing: 20) {
                     Section(header: Text("Giriş")
                         .font(.system(size: 25, weight: .medium))) {
