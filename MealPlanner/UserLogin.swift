@@ -100,6 +100,8 @@ struct UserLogin: View {
         @FocusState private var isFocusedNewPassword: Bool
         @FocusState private var isFocusedNewConfirmPassword: Bool
         @State private var showToastMessage = false
+        @Environment(\.dismiss) var dismiss
+
         
         
         
@@ -148,7 +150,7 @@ struct UserLogin: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                      
+                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
                                     .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                             )
                             .focused($isFocusedOldPassword)
@@ -159,7 +161,7 @@ struct UserLogin: View {
                             .padding(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                      
+                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
                                     .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                             )
                             .focused($isFocusedOldPassword)
@@ -297,6 +299,22 @@ struct UserLogin: View {
                 
             }
             .padding()
+            .navigationBarBackButtonHidden(true)
+
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            
+                            Text("Geri Dön")
+                            Spacer()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -311,15 +329,14 @@ struct UserLogin: View {
                     NavigationStack {
                         List {
                             Section {
-                                
                                 NavigationLink(destination: changePassword( oldPassword : $password )) {
                                     HStack {
                                         Text("Şifreyi Değiştir")
                                         Spacer()
-                                        Image(systemName: "greaterthan")
-                                        
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
+                                .foregroundColor(.orange)
                                 
                                 Button(action: {
                                     self.showingDeleteAccountPopup = true
@@ -327,7 +344,7 @@ struct UserLogin: View {
                                     HStack {
                                         Text("Hesabı Sil")
                                         Spacer()
-                                        Image(systemName: "greaterthan")
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
                                 .alert(isPresented: $showingDeleteAccountPopup) {
@@ -347,7 +364,7 @@ struct UserLogin: View {
                                     HStack {
                                         Text("Çıkış Yap")
                                         Spacer()
-                                        Image(systemName: "greaterthan")
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
                             }
@@ -356,14 +373,14 @@ struct UserLogin: View {
                                     HStack {
                                         Text("Ayarlar")
                                         Spacer()
-                                        Image(systemName: "greaterthan")
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
                                 Button(action: appSetting) {
                                     HStack {
                                         Text("Uygulama Hakkında")
                                         Spacer()
-                                        Image(systemName: "greaterthan")
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
                             }
