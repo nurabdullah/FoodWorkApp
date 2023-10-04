@@ -23,6 +23,29 @@ struct ToastDeleteUserView: View {
     }
 }
 
+struct ToastChangePasswordView: View {
+    var body: some View {
+        ZStack {
+            VStack {
+                Image(systemName: "hand.thumbsup")
+                    .font(.largeTitle)
+                    .foregroundColor(Color.orange)
+                    .padding(.bottom, 10)
+                
+                Text("Şifre başarılı bir şekilde değiştirildi")
+                    .foregroundColor(Color.white)
+                    .cornerRadius(10)
+            }
+            .padding()
+            .background(Color.gray.opacity(0.5))
+            .cornerRadius(20)
+            .transition(.opacity)
+            .animation(.easeInOut(duration: 0.4))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
 
 
 struct changePassword: View {
@@ -36,6 +59,8 @@ struct changePassword: View {
     @FocusState private var isFocusedOldPassword: Bool
     @FocusState private var isFocusedNewPassword: Bool
     @FocusState private var isFocusedNewConfirmPassword: Bool
+    @State private var showToastMessage = false
+
 
     
     var isPasswordMatch: Bool {
@@ -57,6 +82,10 @@ struct changePassword: View {
             newPassword = ""
             newPasswordConfirm = ""
             oldPassword = ""
+            showToastMessage = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                showToastMessage = false
+            }
             
         }else{
             isPasswordMatchError = true
@@ -189,6 +218,7 @@ struct changePassword: View {
 
                 }
             }
+          
             
             if isPasswordMatchError {
                 Text("Yeni şifreler eşleşmiyor.")
@@ -213,7 +243,13 @@ struct changePassword: View {
 
             }
             .disabled(!buttonCheck)
+            
             Spacer()
+            if showToastMessage {
+                ToastChangePasswordView()
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.4))
+            }
 
         }
         .padding()
