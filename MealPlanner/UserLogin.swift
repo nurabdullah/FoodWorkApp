@@ -47,217 +47,6 @@ struct ToastChangePasswordView: View {
 }
 
 
-
-struct changePassword: View {
-    @Binding var oldPassword: String
-    @State private var newPassword: String = ""
-    @State private var newPasswordConfirm: String = ""
-    @State private var isPasswordMatchError = false
-    @State private var isOldPasswordVisible = false
-    @State private var isNewPasswordVisible = false
-    @State private var isNewConfirmPasswordVisible = false
-    @FocusState private var isFocusedOldPassword: Bool
-    @FocusState private var isFocusedNewPassword: Bool
-    @FocusState private var isFocusedNewConfirmPassword: Bool
-    @State private var showToastMessage = false
-
-
-    
-    var isPasswordMatch: Bool {
-        return newPassword == newPasswordConfirm
-    }
-    
-    var buttonCheck: Bool{
-        return !oldPassword.isEmpty && !newPassword.isEmpty && !newPasswordConfirm.isEmpty
-
-    }
-    
-    func changePasswordButton() {
-        isFocusedOldPassword = false
-        isFocusedNewPassword = false
-        isFocusedNewConfirmPassword = false
-
-        if isPasswordMatch {
-            isPasswordMatchError = false
-            newPassword = ""
-            newPasswordConfirm = ""
-            oldPassword = ""
-            showToastMessage = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                showToastMessage = false
-            }
-            
-        }else{
-            isPasswordMatchError = true
-            Text("Yeni şifreler eşleşmiyor.")
-                .foregroundColor(.red)
-                .padding(.top, 5)
-                .padding(.bottom, 10)
-
-        }
-
-    }
-    
-    var body: some View {
-        VStack {
-            
-            ZStack {
-                if isOldPasswordVisible {
-                    TextField("Eski Şifre", text: $oldPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedOldPassword)
-
-                } else {
-                    SecureField("Eski Şifre", text: $oldPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedOldPassword)
-
-                }
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isOldPasswordVisible.toggle()
-                        isFocusedNewPassword = false
-                        isFocusedNewConfirmPassword = false
-                        
-                    }) {
-                        Image(systemName: isOldPasswordVisible ? "eye.slash" : "eye")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 15)
-                    .buttonStyle(BorderedButtonStyle())
-                }
-            }
-
-
-            ZStack {
-                if isNewPasswordVisible {
-                    TextField("Yeni Şifre", text: $newPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedNewPassword)
-
-                } else {
-                    SecureField("Yeni Şifre", text: $newPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedNewPassword)
-
-                }
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isNewPasswordVisible.toggle()
-                        isFocusedOldPassword = false
-                        isFocusedNewConfirmPassword = false
-                        
-                    }) {
-                        Image(systemName: isNewPasswordVisible ? "eye.slash" : "eye")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 15)
-                    .buttonStyle(BorderedButtonStyle())
-                }
-            }
-
-            
-            ZStack {
-                if isNewConfirmPasswordVisible {
-                    TextField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedNewConfirmPassword)
-
-                } else {
-                    SecureField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
-                        .focused($isFocusedNewConfirmPassword)
-
-                }
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isNewConfirmPasswordVisible.toggle()
-                        isFocusedOldPassword = false
-                        isFocusedNewPassword = false
-                    }) {
-                        Image(systemName: isNewConfirmPasswordVisible ? "eye.slash" : "eye")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 15)
-                    .buttonStyle(BorderedButtonStyle())
-
-                }
-            }
-          
-            
-            if isPasswordMatchError {
-                Text("Yeni şifreler eşleşmiyor.")
-                    .foregroundColor(.red)
-                    .padding(.top, 5)
-                    .padding(.bottom, 10)
-            }else{
-                Text("")
-            }
-    
-            Button(action: changePasswordButton) {
-                HStack {
-                    Text("Şifreyi Değiştir")
-                        .foregroundColor(.white)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .background(NavigationLink("", destination: ContentView()))
-                .foregroundColor(.white)
-                .padding()
-                .background(buttonCheck ? Color.orange : Color.gray)
-                .cornerRadius(10)
-
-            }
-            .disabled(!buttonCheck)
-            
-            Spacer()
-            if showToastMessage {
-                ToastChangePasswordView()
-                    .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.4))
-            }
-
-        }
-        .padding()
-    }
-}
-
-
-
 struct UserLogin: View {
     @EnvironmentObject private var dataModel: DataModel
     @State private var userName: String = ""
@@ -268,7 +57,7 @@ struct UserLogin: View {
     @FocusState private var isFocusedPassword: Bool
     @State private var showingDeleteAccountPopup = false
     @State private var showToastMessage = false
-
+    
     
     
     
@@ -293,10 +82,227 @@ struct UserLogin: View {
             dataModel.isLogin = false
         }
     }
-
+    
     
     func appSetting() {
     }
+    
+    
+    struct changePassword: View {
+        @Binding var oldPassword: String
+        @State private var newPassword: String = ""
+        @State private var newPasswordConfirm: String = ""
+        @State private var isPasswordMatchError = false
+        @State private var isOldPasswordVisible = false
+        @State private var isNewPasswordVisible = false
+        @State private var isNewConfirmPasswordVisible = false
+        @FocusState private var isFocusedOldPassword: Bool
+        @FocusState private var isFocusedNewPassword: Bool
+        @FocusState private var isFocusedNewConfirmPassword: Bool
+        @State private var showToastMessage = false
+        
+        
+        
+        var isPasswordMatch: Bool {
+            return newPassword == newPasswordConfirm
+        }
+        
+        var buttonCheck: Bool{
+            return !oldPassword.isEmpty && !newPassword.isEmpty && !newPasswordConfirm.isEmpty
+            
+        }
+        
+        func changePasswordButton() {
+            isFocusedOldPassword = false
+            isFocusedNewPassword = false
+            isFocusedNewConfirmPassword = false
+            
+            if isPasswordMatch {
+                isPasswordMatchError = false
+                newPassword = ""
+                newPasswordConfirm = ""
+                oldPassword = ""
+                showToastMessage = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    showToastMessage = false
+                }
+                
+            }else{
+                isPasswordMatchError = true
+                Text("Yeni şifreler eşleşmiyor.")
+                    .foregroundColor(.red)
+                    .padding(.top, 5)
+                    .padding(.bottom, 10)
+                
+            }
+            
+        }
+        
+        var body: some View {
+            VStack {
+                
+                ZStack {
+                    if isOldPasswordVisible {
+                        TextField("Eski Şifre", text: $oldPassword)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                      
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedOldPassword)
+                        
+                    } else {
+                        SecureField("Eski Şifre", text: $oldPassword)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)                                      
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedOldPassword)
+                        
+                    }
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            isOldPasswordVisible.toggle()
+                            isFocusedNewPassword = false
+                            isFocusedNewConfirmPassword = false
+                            
+                        }) {
+                            Image(systemName: isOldPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.trailing, 15)
+                        .buttonStyle(BorderedButtonStyle())
+                    }
+                }
+                
+                
+                ZStack {
+                    if isNewPasswordVisible {
+                        TextField("Yeni Şifre", text: $newPassword)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedNewPassword)
+                        
+                    } else {
+                        SecureField("Yeni Şifre", text: $newPassword)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedNewPassword)
+                        
+                    }
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            isNewPasswordVisible.toggle()
+                            isFocusedOldPassword = false
+                            isFocusedNewConfirmPassword = false
+                            
+                        }) {
+                            Image(systemName: isNewPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.trailing, 15)
+                        .buttonStyle(BorderedButtonStyle())
+                    }
+                }
+                
+                
+                ZStack {
+                    if isNewConfirmPasswordVisible {
+                        TextField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedNewConfirmPassword)
+                        
+                    } else {
+                        SecureField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            )
+                            .focused($isFocusedNewConfirmPassword)
+                        
+                    }
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            isNewConfirmPasswordVisible.toggle()
+                            isFocusedOldPassword = false
+                            isFocusedNewPassword = false
+                        }) {
+                            Image(systemName: isNewConfirmPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.trailing, 15)
+                        .buttonStyle(BorderedButtonStyle())
+                        
+                    }
+                }
+                
+                
+                if isPasswordMatchError {
+                    Text("Yeni şifreler eşleşmiyor.")
+                        .foregroundColor(.red)
+                        .padding(.top, 5)
+                        .padding(.bottom, 10)
+                }else{
+                    Text("")
+                }
+                
+                Button(action: changePasswordButton) {
+                    HStack {
+                        Text("Şifreyi Değiştir")
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .background(NavigationLink("", destination: ContentView()))
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(buttonCheck ? Color.orange : Color.gray)
+                    .cornerRadius(10)
+                    
+                }
+                .disabled(!buttonCheck)
+                
+                Spacer()
+                if showToastMessage {
+                    ToastChangePasswordView()
+                        .transition(.opacity)
+                        .animation(.easeInOut(duration: 0.4))
+                }
+                
+            }
+            .padding()
+        }
+    }
+    
+    
+    
+    
     
     var body: some View {
         ZStack {
@@ -362,7 +368,16 @@ struct UserLogin: View {
                                 }
                             }
                         }
-                        
+                        .toolbar{
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                HStack {
+                                    Image(systemName: "person")
+                                    Text(dataModel.loginMyArray.first ?? "")
+                                        .font(.system(size: 25))
+                                    Spacer()
+                                }
+                            }
+                        }
                         .listStyle(.insetGrouped)
                         
                     }
