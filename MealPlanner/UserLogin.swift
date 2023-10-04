@@ -43,6 +43,11 @@ struct changePassword: View {
         return newPassword == newPasswordConfirm
     }
     
+    var buttonCheck: Bool{
+        return !oldPassword.isEmpty && !newPassword.isEmpty && !newPasswordConfirm.isEmpty
+
+    }
+    
     func changePasswordButton() {
         isFocusedOldPassword = false
         isFocusedNewPassword = false
@@ -178,6 +183,7 @@ struct changePassword: View {
                     }
                     .padding(.trailing, 15)
                     .buttonStyle(BorderedButtonStyle())
+
                 }
             }
             
@@ -201,10 +207,11 @@ struct changePassword: View {
                 .background(NavigationLink("", destination: ContentView()))
                 .foregroundColor(.white)
                 .padding()
-                .background(Color.orange)
+                .background(buttonCheck ? Color.orange : Color.gray)
                 .cornerRadius(10)
+
             }
-//            .disabled(!isPasswordMatch)
+            .disabled(!buttonCheck)
             Spacer()
 
         }
