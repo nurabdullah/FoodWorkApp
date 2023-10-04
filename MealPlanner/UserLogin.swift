@@ -396,8 +396,9 @@ struct UserLogin: View {
                                     Image(systemName: "person")
                                     Text(dataModel.loginMyArray.first ?? "")
                                         .font(.system(size: 25))
+                                    
                                     Spacer()
-                                }
+                                }.padding(.top,25)
                             }
                         }
                         .listStyle(.insetGrouped)
