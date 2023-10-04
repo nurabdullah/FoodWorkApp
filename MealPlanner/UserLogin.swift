@@ -101,7 +101,7 @@ struct UserLogin: View {
         @FocusState private var isFocusedNewConfirmPassword: Bool
         @State private var showToastMessage = false
         @Environment(\.dismiss) var dismiss
-
+        
         
         
         
@@ -181,6 +181,7 @@ struct UserLogin: View {
                         .padding(.trailing, 15)
                         .buttonStyle(BorderedButtonStyle())
                     }
+                
                 }
                 
                 
@@ -300,11 +301,14 @@ struct UserLogin: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-
+            
             .toolbar{
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
                         dismiss()
+                        oldPassword = ""
+                        newPasswordConfirm = ""
+                        newPassword = ""
                     }) {
                         HStack {
                             Image(systemName: "chevron.left")
@@ -314,8 +318,9 @@ struct UserLogin: View {
                         }
                     }
                 }
-            }
+            } .padding()
         }
+           
     }
     
     
@@ -333,7 +338,7 @@ struct UserLogin: View {
                                     HStack {
                                         Text("Şifreyi Değiştir")
                                         Spacer()
-                                        Image(systemName: "chevron.right")
+//                                        Image(systemName: "chevron.right")
                                     }
                                 }
                                 .foregroundColor(.orange)
