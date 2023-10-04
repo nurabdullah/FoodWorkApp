@@ -28,7 +28,6 @@ struct ToastDeleteUserView: View {
 struct changePassword: View {
     @Binding var oldPassword: String
     @State private var newPassword: String = ""
-    @State private var adana: String = ""
     @State private var newPasswordConfirm: String = ""
     @State private var isPasswordMatchError = false
     @State private var isOldPasswordVisible = false
@@ -52,8 +51,12 @@ struct changePassword: View {
         isFocusedOldPassword = false
         isFocusedNewPassword = false
         isFocusedNewConfirmPassword = false
+
         if isPasswordMatch {
             isPasswordMatchError = false
+            newPassword = ""
+            newPasswordConfirm = ""
+            oldPassword = ""
             
         }else{
             isPasswordMatchError = true
@@ -99,7 +102,7 @@ struct changePassword: View {
                         isFocusedNewConfirmPassword = false
                         
                     }) {
-                        Image(systemName: isNewPasswordVisible ? "eye.slash" : "eye")
+                        Image(systemName: isOldPasswordVisible ? "eye.slash" : "eye")
                             .foregroundColor(.gray)
                     }
                     .padding(.trailing, 15)
@@ -198,8 +201,6 @@ struct changePassword: View {
     
             Button(action: changePasswordButton) {
                 HStack {
-                    Image(systemName: "rectangle.portrait.and.arrow.right.fill")
-                        .foregroundColor(.white)
                     Text("Şifreyi Değiştir")
                         .foregroundColor(.white)
                 }
@@ -218,10 +219,6 @@ struct changePassword: View {
         .padding()
     }
 }
-
-
-
-
 
 
 
@@ -260,8 +257,7 @@ struct UserLogin: View {
             dataModel.isLogin = false
         }
     }
-    
-       
+
     
     func appSetting() {
     }
