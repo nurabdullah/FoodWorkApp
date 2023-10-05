@@ -57,6 +57,8 @@ struct UserLogin: View {
     @FocusState private var isFocusedPassword: Bool
     @State private var showingDeleteAccountPopup = false
     @State private var showToastMessage = false
+    @State private var isLoggingOut = false
+
     
     
     
@@ -74,11 +76,16 @@ struct UserLogin: View {
     }
     
     func deleteUser() {
-        print("delete hesap")
         showToastMessage = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             showToastMessage = false
             dataModel.loginMyArray.removeAll()
+            dataModel.isLogin = false
+        }
+    }
+    
+    func logoutUser(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             dataModel.isLogin = false
         }
     }
@@ -101,9 +108,7 @@ struct UserLogin: View {
         @FocusState private var isFocusedNewConfirmPassword: Bool
         @State private var showToastMessage = false
         @Environment(\.dismiss) var dismiss
-        
-        
-        
+     
         
         var isPasswordMatch: Bool {
             return newPassword == newPasswordConfirm
@@ -328,6 +333,8 @@ struct UserLogin: View {
     
     
     var body: some View {
+    
+        
         ZStack {
             VStack(alignment: .leading, spacing: 20) {
                 if dataModel.isLogin {
@@ -336,17 +343,21 @@ struct UserLogin: View {
                             Section {
                                 HStack {
                                     Text("Şifreyi Değiştir")
+                                    
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                 }
-                                .foregroundColor(.orange)
+                                .foregroundColor((showingDeleteAccountPopup || isLoggingOut) ? Color.gray.opacity(0.3) : .orange) // Rengi ve opaklığı koşullu olarak değiştir
                                 .overlay {
                                     NavigationLink(destination: {changePassword( oldPassword : $password ) }, label: { EmptyView() })
                                         .opacity(0)
                                 }
+                               
                                 
                                 Button(action: {
                                     self.showingDeleteAccountPopup = true
+                                    isLoggingOut = true
+
                                 }) {
                                     HStack {
                                         Text("Hesabı Sil")
@@ -363,11 +374,14 @@ struct UserLogin: View {
                                         },
                                         secondaryButton: .cancel(Text("Hayır")) {
                                             self.showingDeleteAccountPopup = false
+                                            isLoggingOut = false
+
                                         }
                                     )
                                 }
                                 
-                                Button(action: deleteUser) {
+                                Button(action: logoutUser) {
+                                    
                                     HStack {
                                         Text("Çıkış Yap")
                                         Spacer()
