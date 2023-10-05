@@ -334,14 +334,16 @@ struct UserLogin: View {
                     NavigationStack {
                         List {
                             Section {
-                                NavigationLink(destination: changePassword( oldPassword : $password )) {
-                                    HStack {
-                                        Text("Şifreyi Değiştir")
-                                        Spacer()
-//                                        Image(systemName: "chevron.right")
-                                    }
+                                HStack {
+                                    Text("Şifreyi Değiştir")
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
                                 }
                                 .foregroundColor(.orange)
+                                .overlay {
+                                    NavigationLink(destination: {changePassword( oldPassword : $password ) }, label: { EmptyView() })
+                                        .opacity(0)
+                                }
                                 
                                 Button(action: {
                                     self.showingDeleteAccountPopup = true
@@ -485,6 +487,7 @@ struct UserLogin: View {
                 }
             }
             
+            
             if showToastMessage {
                 ToastDeleteUserView()
                     .transition(.opacity)
@@ -499,3 +502,7 @@ struct UserLogin_Previews: PreviewProvider {
         UserLogin()
     }
 }
+
+
+
+
