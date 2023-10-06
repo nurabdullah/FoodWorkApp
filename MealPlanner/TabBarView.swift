@@ -1,16 +1,11 @@
-//
-//  TabBarView.swift
-//  MealPlanner
-//
-//  Created by Abdullah Nur on 30.09.2023.
-//
+
 
 import SwiftUI
 
 struct TabBarView: View {
     
     @StateObject private var dataModel = DataModel()
-    
+
     
     
     var body: some View {
@@ -29,7 +24,7 @@ struct TabBarView: View {
                         Label("Listele" , systemImage: "list.clipboard")
                     }
                 
-                UserLogin()
+                AccountView()
                     .tabItem {
                         Label("Hesabım" , systemImage: "person.fill")
                         
@@ -50,8 +45,10 @@ struct TabBarView: View {
             
             
         }else {
-            UserLogin()
-                .environmentObject(dataModel)
+//            NavigationView {
+                UserRegister()
+                    .environmentObject(dataModel)
+//            }
         }
     }
 }
