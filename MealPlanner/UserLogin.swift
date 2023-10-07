@@ -18,9 +18,10 @@ struct UserLogin: View {
         if isLoginEnabled {
                 if let user = dataModel.usersList.first(where: { $0.userName == userName && $0.userPassword == password }) {
                     dataModel.isLogin = true
+                    dataModel.loginMyArray.removeAll()
+                    dataModel.loginMyArray.append(userName)
                     userName = ""
                     password = ""
-
 
                 } else {
                     errorMessage = "Kullanıcı adı veya şifre yanlış"

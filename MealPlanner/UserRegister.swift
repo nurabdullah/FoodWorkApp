@@ -13,6 +13,7 @@ struct UserRegister: View {
     @State private var isUserPasswordConfirmVisible = false
     @State private var checkBoxOn = false
 
+
     var isLoginEnabled: Bool {
         return !userName.isEmpty && !userPassword.isEmpty && !userPasswordConfirm.isEmpty && checkBoxOn
     }
@@ -20,6 +21,7 @@ struct UserRegister: View {
     private func registerUser() {
         if isLoginEnabled {
             dataModel.isLogin = true
+            dataModel.loginMyArray.removeAll()
             dataModel.loginMyArray.append(userName)
             let users = Users(userName: userName, userPassword: userPassword)
             dataModel.usersList.append(users)
@@ -30,8 +32,9 @@ struct UserRegister: View {
             isFocusedPassword = false
             isFocusedPasswordVisable = false
             print("Kayıt başarılı")
-            print(users)
-            print(userName)
+            for user in dataModel.usersList {
+                print("User: \(user.userName), Password: \(user.userPassword)")
+            }
         }
     }
     
