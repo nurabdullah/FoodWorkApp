@@ -4,31 +4,34 @@ struct UserRegister: View {
     
     @EnvironmentObject private var dataModel: DataModel
     @State private var userName: String = ""
-    @State private var password: String = ""
-    @State private var passwordConfirm: String = ""
+    @State private var userPassword: String = ""
+    @State private var userPasswordConfirm: String = ""
     @FocusState private var isFocusedUserName: Bool
     @FocusState private var isFocusedPassword: Bool
     @FocusState private var isFocusedPasswordVisable: Bool
-    @State private var isPasswordVisible = false
-    @State private var isPasswordConfirmVisible = false
+    @State private var isUserPasswordVisible = false
+    @State private var isUserPasswordConfirmVisible = false
     @State private var checkBoxOn = false
 
     var isLoginEnabled: Bool {
-        return !userName.isEmpty && !password.isEmpty && !passwordConfirm.isEmpty && checkBoxOn
+        return !userName.isEmpty && !userPassword.isEmpty && !userPasswordConfirm.isEmpty && checkBoxOn
     }
     
     private func registerUser() {
         if isLoginEnabled {
-
             dataModel.isLogin = true
             dataModel.loginMyArray.append(userName)
+            let users = Users(userName: userName, userPassword: userPassword)
+            dataModel.usersList.append(users)
             userName = ""
-            password = ""
-            passwordConfirm = ""
+            userPassword = ""
+            userPasswordConfirm = ""
             isFocusedUserName = false
             isFocusedPassword = false
             isFocusedPasswordVisable = false
             print("Kayıt başarılı")
+            print(users)
+            print(userName)
         }
     }
     
@@ -47,8 +50,8 @@ struct UserRegister: View {
                     .focused($isFocusedUserName)
                 
                 ZStack {
-                    if isPasswordVisible {
-                        TextField("Şifre", text: $password)
+                    if isUserPasswordVisible {
+                        TextField("Şifre", text: $userPassword)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding(10)
                             .overlay(
@@ -58,7 +61,7 @@ struct UserRegister: View {
                             )
                             .focused($isFocusedPassword)
                     } else {
-                        SecureField("Şifre", text: $password)
+                        SecureField("Şifre", text: $userPassword)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding(10)
                             .overlay(
@@ -72,11 +75,11 @@ struct UserRegister: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPasswordVisible.toggle()
+                            isUserPasswordVisible.toggle()
                             isFocusedUserName = false
                             isFocusedPasswordVisable = false
                         }) {
-                            Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                            Image(systemName: isUserPasswordVisible ? "eye.slash" : "eye")
                                 .foregroundColor(.gray)
                         }
                         .padding(.trailing, 15)
@@ -85,8 +88,8 @@ struct UserRegister: View {
                 }
                 
                 ZStack {
-                    if isPasswordConfirmVisible {
-                        TextField("Şifre Tekrar", text: $passwordConfirm)
+                    if isUserPasswordConfirmVisible {
+                        TextField("Şifre Tekrar", text: $userPasswordConfirm)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding(10)
                             .overlay(
@@ -96,7 +99,7 @@ struct UserRegister: View {
                             )
                             .focused($isFocusedPasswordVisable)
                     } else {
-                        SecureField("Şifre Tekrar", text: $passwordConfirm)
+                        SecureField("Şifre Tekrar", text: $userPasswordConfirm)
                             .textFieldStyle(PlainTextFieldStyle())
                             .padding(10)
                             .overlay(
@@ -110,11 +113,11 @@ struct UserRegister: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPasswordConfirmVisible.toggle()
+                            isUserPasswordConfirmVisible.toggle()
                             isFocusedUserName = false
                             isFocusedPassword = false
                         }) {
-                            Image(systemName: isPasswordConfirmVisible ? "eye.slash" : "eye")
+                            Image(systemName: isUserPasswordConfirmVisible ? "eye.slash" : "eye")
                                 .foregroundColor(.gray)
                         }
                         .padding(.trailing, 15)

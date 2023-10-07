@@ -7,6 +7,8 @@ struct UserLogin: View {
     @State private var isPasswordVisible = false
     @FocusState private var isFocusedUserName: Bool
     @FocusState private var isFocusedPassword: Bool
+    @State private var errorMessage: String = ""
+
 
     var isLoginEnabled: Bool {
         return !userName.isEmpty && !password.isEmpty
@@ -14,10 +16,16 @@ struct UserLogin: View {
 
     func addUser() {
         if isLoginEnabled {
-            dataModel.isLogin = true
-            dataModel.loginMyArray.append(userName)
-            userName = ""
-        }
+                if let user = dataModel.usersList.first(where: { $0.userName == userName && $0.userPassword == password }) {
+                    dataModel.isLogin = true
+                    userName = ""
+                    password = ""
+
+
+                } else {
+                    errorMessage = "Kullanıcı adı veya şifre yanlış"
+                }
+            }
     }
 
     var body: some View {
@@ -70,6 +78,11 @@ struct UserLogin: View {
                             }
                         }
                     }
+                Text(errorMessage)
+                                    .foregroundColor(.red)
+                                    .font(.system(size: 14))
+                                    .padding(.top, 5)
+                                    .opacity(!errorMessage.isEmpty ? 1 : 0)
 
                 Button(action: addUser) {
                     HStack {

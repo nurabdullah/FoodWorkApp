@@ -6,6 +6,10 @@ struct Food: Codable, Hashable {
     var caloryType: Int
     var time: Date
 }
+struct Users: Codable, Hashable {
+    var userName: String
+    var userPassword: String
+}
 
 class DataModel: ObservableObject {
     
@@ -32,9 +36,15 @@ class DataModel: ObservableObject {
             saveFoodData()
         }
     }
+    @Published var usersList: [Users] = [] {
+        didSet {
+            saveUsersData()
+        }
+    }
     
     init() {
-        loadData()
+        loadFoodData()
+        loadUsersData()
         loadLoginData()
         loadLoginArrayData()
         subscribeToAppLifecycle()
@@ -55,6 +65,11 @@ class DataModel: ObservableObject {
             UserDefaults.standard.set(encodedData, forKey: dataKey)
         }
     }
+     private func saveUsersData() {
+        if let encodedData = try? JSONEncoder().encode(usersList) {
+            UserDefaults.standard.set(encodedData, forKey: dataKey)
+        }
+    }
     
     private func saveLoginData() {
         UserDefaults.standard.set(isLogin, forKey: loginKey)
@@ -66,10 +81,17 @@ class DataModel: ObservableObject {
     
     
     
-    private func loadData() {
+    private func loadFoodData() {
         if let encodedData = UserDefaults.standard.data(forKey: dataKey) {
             if let decodedData = try? JSONDecoder().decode([Food].self, from: encodedData) {
                 foodList = decodedData
+            }
+        }
+    }
+    private func loadUsersData() {
+        if let encodedData = UserDefaults.standard.data(forKey: dataKey) {
+            if let decodedData = try? JSONDecoder().decode([Users].self, from: encodedData) {
+                usersList = decodedData
             }
         }
     }
