@@ -41,14 +41,24 @@ struct AccountView: View {
     @State private var password = ""
 
 
+
     func deleteUser() {
-        showToastMessage = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            showToastMessage = false
-            dataModel.loginMyArray.removeAll()
-            dataModel.isLogin = false
+        if let loggedInUserName = dataModel.loginMyArray.first {
+            if let index = dataModel.usersList.firstIndex(where: { $0.userName == loggedInUserName }) {
+                dataModel.usersList.remove(at: index)
+                dataModel.loginMyArray.removeAll()
+                dataModel.isLogin = false
+                showToastMessage = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    showToastMessage = false
+                    for user in dataModel.usersList {
+                        print("User: \(user.userName), Password: \(user.userPassword)")
+                    }
+                }
+            }
         }
     }
+
 
     func logoutUser() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -64,6 +74,7 @@ struct AccountView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 20) {
+                
                 NavigationStack {
                     List {
                         Section {
