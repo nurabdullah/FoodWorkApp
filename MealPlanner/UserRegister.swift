@@ -162,8 +162,8 @@ struct UserRegister: View {
         }
 
         .padding()
-        .navigationBarBackButtonHidden(false)
 
+        .navigationBarBackButtonHidden(true)
 
     }
     
