@@ -6,48 +6,39 @@ struct Food: Codable, Hashable {
     var caloryType: Int
     var time: Date
 }
+
 struct Users: Codable, Hashable {
     var userName: String
     var userPassword: String
 }
 
 class DataModel: ObservableObject {
-    
     private let dataFoodKey = "savedFoodList"
     private let dataLoginArrayKey = "savedUsersList"
     private let loginKey = "isLogin"
-    private let loginArrayKey = "loginMyArray"
     
     @Published var isLogin: Bool = false {
         didSet {
             saveLoginData()
         }
     }
-  
-    
-    @Published var loginMyArray: [String] = [] {
-        didSet {
-            saveLoginArrayData()
-        }
-    }
-  
     
     @Published var foodList: [Food] = [] {
         didSet {
             saveFoodData()
         }
     }
-    @Published var usersList: [Users] = [] {
+    
+    @Published var userList: [Users] = [] {
         didSet {
             saveUsersData()
         }
     }
     
     init() {
-        loadFoodData()
-        loadUsersData()
-        loadLoginData()
-        loadLoginArrayData()
+        getFoodData()
+        getUserData()
+        getLoginData()
         subscribeToAppLifecycle()
     }
     
@@ -58,7 +49,6 @@ class DataModel: ObservableObject {
     
     @objc private func saveDataOnAppExit() {
         saveLoginData()
-        saveLoginArrayData()
     }
     
     private func saveFoodData() {
@@ -66,8 +56,8 @@ class DataModel: ObservableObject {
             UserDefaults.standard.set(encodedData, forKey: dataFoodKey)
         }
     }
-     private func saveUsersData() {
-        if let encodedData = try? JSONEncoder().encode(usersList) {
+    private func saveUsersData() {
+        if let encodedData = try? JSONEncoder().encode(userList) {
             UserDefaults.standard.set(encodedData, forKey: dataLoginArrayKey)
         }
     }
@@ -76,34 +66,24 @@ class DataModel: ObservableObject {
         UserDefaults.standard.set(isLogin, forKey: loginKey)
     }
     
-    private func saveLoginArrayData() {
-        UserDefaults.standard.set(loginMyArray, forKey: loginArrayKey)
-    }
-    
-    
-    
-    private func loadFoodData() {
+    private func getFoodData() {
         if let encodedData = UserDefaults.standard.data(forKey: dataFoodKey) {
             if let decodedData = try? JSONDecoder().decode([Food].self, from: encodedData) {
                 foodList = decodedData
             }
         }
     }
-    private func loadUsersData() {
+    private func getUserData() {
         if let encodedData = UserDefaults.standard.data(forKey: dataLoginArrayKey) {
             if let decodedData = try? JSONDecoder().decode([Users].self, from: encodedData) {
-                usersList = decodedData
+                userList = decodedData
             }
         }
     }
     
-    private func loadLoginData() {
+    private func getLoginData() {
         isLogin = UserDefaults.standard.bool(forKey: loginKey)
     }
     
-    private func loadLoginArrayData() {
-        loginMyArray = UserDefaults.standard.stringArray(forKey: loginArrayKey) ?? []
-    }
-   
 }
 

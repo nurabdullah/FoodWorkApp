@@ -35,22 +35,16 @@ struct ContentView: View {
     @State private var showSheet = false
     @State private var sheetHeight: CGFloat = .zero
     
-    var isFoodAddedEnabled: Bool {
-        return !foodName.isEmpty && selectedCalorieTypeIndex != nil
-    }
-    
-    func confirmCalories() {
-        showSheet = false
+    var isAddFoodButtonDisabled: Bool {
+        return !(!foodName.isEmpty && selectedCalorieTypeIndex != nil)
     }
     
     func rejectCalories() {
         selectedCalorieTypeIndex = nil
         showSheet = false
-
     }
     
-    func addItem() {
-        if isFoodAddedEnabled {
+    func addFood() {
             isFocusedFoodName = false
             let trimmedString = foodName.trimmingCharacters(in: .whitespaces)
             let food = Food(foodName: trimmedString, caloryType: selectedCalorieTypeIndex ?? 0, time: currentDate)
@@ -61,13 +55,16 @@ struct ContentView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 showToastMessage = false
             }
-        }
     }
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 30) {
-                if let firstItem = dataModel.loginMyArray.first {
+                
+                //  TO-DO
+                //  firstItem: global bir deger olacak. kullanici dataModel'de duracak.
+                let firstItem = "Ahmet"
+                if !firstItem.isEmpty {
                     HStack {
                         Text("Hoşgeldin " + firstItem)
                             .font(.system(size: 25))
@@ -137,18 +134,12 @@ struct ContentView: View {
                                     selectedCalorieTypeIndex == index
                                 },
                                 set: { isSelected in
-                                    if isSelected {
-                                        selectedCalorieTypeIndex = index
-                                        isFocusedFoodName = false
-                                    } else {
-                                        selectedCalorieTypeIndex = nil
-                                        isFocusedFoodName = false
-                                    }
+                                    selectedCalorieTypeIndex = isSelected ? index : nil
+                                    isFocusedFoodName = false
                                 }
                             ))
                         }
                     }
-                        
                         Divider()
                             .padding(1)
                         
@@ -159,7 +150,7 @@ struct ContentView: View {
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                                    .disabled(!isFoodAddedEnabled))
+                                    .disabled(isAddFoodButtonDisabled))
                                 .foregroundColor(.orange)
                                 .padding()
                                 .background(Color.white)
@@ -170,13 +161,13 @@ struct ContentView: View {
                                 )
                                 Spacer()
                             }
-                            Button(action: confirmCalories) {
+                            Button(action: {showSheet = false}) {
                                 HStack {
                                     Text("Onayla")
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin)
-                                    .disabled(!isFoodAddedEnabled))
+                                    .disabled(isAddFoodButtonDisabled))
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(Color.orange)
@@ -197,7 +188,7 @@ struct ContentView: View {
                     .presentationDetents([.height(sheetHeight)])
                 }
                 
-                Button(action: addItem) {
+                Button(action: addFood) {
                     HStack {
                         Text("EKLE")
                             .foregroundColor(.white)
@@ -207,18 +198,13 @@ struct ContentView: View {
                     .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                     .foregroundColor(.white)
                     .padding()
-                    .background(isFoodAddedEnabled ? Color.orange : Color.gray)
+                    .background(!isAddFoodButtonDisabled ? Color.orange : Color.gray)
                     .cornerRadius(10)
                 }
-                .disabled(!isFoodAddedEnabled)
+                .disabled(isAddFoodButtonDisabled)
                 Spacer()
-           
             }
             .padding()
-            
-
-            
-          
             
             if showToastMessage {
                 ToastContentView(message: "Yemek başarıyla eklendi!")

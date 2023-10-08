@@ -18,9 +18,9 @@
 		25ED753E2A5F5CFD005EDF93 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED753D2A5F5CFD005EDF93 /* DataModel.swift */; };
 		D913640C2AC830D600AD0ACB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D913640B2AC830D600AD0ACB /* TabBarView.swift */; };
 		D9152A3A2AD03F2400B6C6AF /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9152A392AD03F2400B6C6AF /* ChangePasswordView.swift */; };
-		D95208262AB84B6900A09E36 /* UserLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95208252AB84B6900A09E36 /* UserLogin.swift */; };
+		D95208262AB84B6900A09E36 /* UserLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95208252AB84B6900A09E36 /* UserLoginView.swift */; };
 		D998CB302AD03198005FAB8C /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D998CB2F2AD03198005FAB8C /* AccountView.swift */; };
-		D9AA89C12ACF366000C8D527 /* UserRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA89C02ACF366000C8D527 /* UserRegister.swift */; };
+		D9AA89C12ACF366000C8D527 /* UserRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA89C02ACF366000C8D527 /* UserRegisterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,9 +55,9 @@
 		25ED753D2A5F5CFD005EDF93 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D913640B2AC830D600AD0ACB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		D9152A392AD03F2400B6C6AF /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
-		D95208252AB84B6900A09E36 /* UserLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogin.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
+		D95208252AB84B6900A09E36 /* UserLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginView.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		D998CB2F2AD03198005FAB8C /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		D9AA89C02ACF366000C8D527 /* UserRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegister.swift; sourceTree = "<group>"; };
+		D9AA89C02ACF366000C8D527 /* UserRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegisterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,11 +111,11 @@
 				25ED750C2A5DCED0005EDF93 /* YemekApp.swift */,
 				25ED753D2A5F5CFD005EDF93 /* DataModel.swift */,
 				D913640B2AC830D600AD0ACB /* TabBarView.swift */,
-				D95208252AB84B6900A09E36 /* UserLogin.swift */,
+				D95208252AB84B6900A09E36 /* UserLoginView.swift */,
 				25ED75382A5EA74F005EDF93 /* ListingView.swift */,
 				25ED750E2A5DCED0005EDF93 /* ContentView.swift */,
 				D998CB2F2AD03198005FAB8C /* AccountView.swift */,
-				D9AA89C02ACF366000C8D527 /* UserRegister.swift */,
+				D9AA89C02ACF366000C8D527 /* UserRegisterView.swift */,
 				D9152A392AD03F2400B6C6AF /* ChangePasswordView.swift */,
 				25ED75102A5DCED1005EDF93 /* Assets.xcassets */,
 				25ED75122A5DCED1005EDF93 /* Preview Content */,
@@ -282,8 +282,8 @@
 				D9152A3A2AD03F2400B6C6AF /* ChangePasswordView.swift in Sources */,
 				25ED753E2A5F5CFD005EDF93 /* DataModel.swift in Sources */,
 				25ED750F2A5DCED0005EDF93 /* ContentView.swift in Sources */,
-				D9AA89C12ACF366000C8D527 /* UserRegister.swift in Sources */,
-				D95208262AB84B6900A09E36 /* UserLogin.swift in Sources */,
+				D9AA89C12ACF366000C8D527 /* UserRegisterView.swift in Sources */,
+				D95208262AB84B6900A09E36 /* UserLoginView.swift in Sources */,
 				25ED75392A5EA74F005EDF93 /* ListingView.swift in Sources */,
 				D913640C2AC830D600AD0ACB /* TabBarView.swift in Sources */,
 				25ED750D2A5DCED0005EDF93 /* YemekApp.swift in Sources */,

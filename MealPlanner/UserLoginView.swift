@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct UserLogin: View {
+struct UserLoginView: View {
     @EnvironmentObject private var dataModel: DataModel
     @State private var userName: String = ""
     @State private var password: String = ""
@@ -9,27 +9,26 @@ struct UserLogin: View {
     @FocusState private var isFocusedPassword: Bool
     @State private var errorMessage: String = ""
     
-
-
-    var isLoginEnabled: Bool {
-        return !userName.isEmpty && !password.isEmpty
+    var isLoginButtonDisabled: Bool {
+        return !(!userName.isEmpty && !password.isEmpty)
     }
-
-    func addUser() {
-        if isLoginEnabled {
-                if let user = dataModel.usersList.first(where: { $0.userName == userName && $0.userPassword == password }) {
-                    dataModel.isLogin = true
-                    dataModel.loginMyArray.removeAll()
-                    dataModel.loginMyArray.append(userName)
-                    userName = ""
-                    password = ""
-
-                } else {
-                    errorMessage = "Kullanıcı adı veya şifre yanlış"
-                }
-            }
+    
+    func loginUser() {
+        // #TO-DO:
+        // UserName unique olmali. Eger ayni username ile bir kullanici varsa yeni kayit yapilmamali.
+        
+        if let user = dataModel.userList.first(where: { $0.userName == userName && $0.userPassword == password }) {
+            dataModel.isLogin = true
+            // TO-DO normalde bu vardi:
+            // dataModel.loginMyArray.removeAll()
+            userName = ""
+            password = ""
+        } else {
+            errorMessage = "Kullanıcı adı veya şifre yanlış"
+        }
+        
     }
-
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 20) {
@@ -81,12 +80,12 @@ struct UserLogin: View {
                         }
                     }
                 Text(errorMessage)
-                                    .foregroundColor(.red)
-                                    .font(.system(size: 14))
-                                    .padding(.top, 5)
-                                    .opacity(!errorMessage.isEmpty ? 1 : 0)
-
-                Button(action: addUser) {
+                    .foregroundColor(.red)
+                    .font(.system(size: 14))
+                    .padding(.top, 5)
+                    .opacity(!errorMessage.isEmpty ? 1 : 0)
+                
+                Button(action: loginUser) {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right.fill")
                             .foregroundColor(.white)
@@ -97,30 +96,31 @@ struct UserLogin: View {
                     .background(NavigationLink("", destination: ContentView(), isActive: $dataModel.isLogin))
                     .foregroundColor(.white)
                     .padding()
-                    .background(isLoginEnabled ? Color.orange : Color.gray)
+                    .background(!isLoginButtonDisabled ? Color.orange : Color.gray)
                     .cornerRadius(10)
                 }
-                .disabled(!isLoginEnabled)
-
-                    NavigationLink(destination: UserRegister()) {
-                        HStack{
+                .disabled(isLoginButtonDisabled)
+                
+                NavigationLink(destination: UserRegisterView()) {
+                    HStack{
                         Text("Üye değil misin?")
                             .foregroundColor(.black)
                         Text("Üye ol")
                             .foregroundColor(.orange)
                     }
-                    }
-                    .padding(.top, 10)
-                    
-                    Spacer()
+                }
+                .padding(.top, 10)
+                
+                Spacer()
             }
+            .padding()
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
-struct UserLogin_Previews: PreviewProvider {
+struct UserLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        UserLogin()
+        UserLoginView()
     }
 }

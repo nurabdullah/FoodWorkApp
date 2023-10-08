@@ -1,9 +1,5 @@
-//
-//  ChangePassword.swift
-//  MealPlanner
-//
-//  Created by Abdullah Nur on 6.10.2023.
-//
+// TO-DO
+// *** 1. SecureField ve TextField'larin style'lari ayni. Tekrar etmesini onle!
 
 import SwiftUI
 
@@ -20,20 +16,21 @@ struct ChangePasswordView: View {
     @FocusState private var isFocusedNewConfirmPassword: Bool
     @State private var showToastMessage = false
     @Environment(\.dismiss) var dismiss
-
+    
     var isPasswordMatch: Bool {
         return newPassword == newPasswordConfirm
     }
-
+    
     var buttonCheck: Bool {
         return !oldPassword.isEmpty && !newPassword.isEmpty && !newPasswordConfirm.isEmpty
     }
-
+    
     func changePasswordButton() {
+
         isFocusedOldPassword = false
         isFocusedNewPassword = false
         isFocusedNewConfirmPassword = false
-
+        
         if isPasswordMatch {
             isPasswordMatchError = false
             newPassword = ""
@@ -51,7 +48,25 @@ struct ChangePasswordView: View {
                 .padding(.bottom, 10)
         }
     }
-
+    
+    func clickEyeIcon(eyeType: String)  {
+        // Nice to have: switch case gecirilse daha verimli olur!
+        if eyeType == "oldPassword" {
+            isOldPasswordVisible.toggle()
+            isFocusedNewPassword = false
+            isFocusedNewConfirmPassword = false
+        } else if eyeType == "newPassword"{
+            isNewPasswordVisible.toggle()
+            isFocusedOldPassword = false
+            isFocusedNewConfirmPassword = false
+        } else if eyeType == "newPasswordConfirm"{
+            isNewConfirmPasswordVisible.toggle()
+            isFocusedOldPassword = false
+            isFocusedNewPassword = false
+        }
+        
+        
+    }
     var body: some View {
         VStack {
             ZStack {
@@ -80,12 +95,7 @@ struct ChangePasswordView: View {
                 }
                 HStack {
                     Spacer()
-                    Button(action: {
-                        isOldPasswordVisible.toggle()
-                        isFocusedNewPassword = false
-                        isFocusedNewConfirmPassword = false
-                        
-                    }) {
+                    Button(action: {clickEyeIcon(eyeType:"oldPassword")}) {
                         Image(systemName: isOldPasswordVisible ? "eye.slash" : "eye")
                             .foregroundColor(.gray)
                     }
@@ -122,10 +132,8 @@ struct ChangePasswordView: View {
                 }
                 HStack {
                     Spacer()
-                    Button(action: {
-                        isNewPasswordVisible.toggle()
-                        isFocusedOldPassword = false
-                        isFocusedNewConfirmPassword = false
+                    Button(action: {clickEyeIcon(eyeType: "newPassword")
+                       
                         
                     }) {
                         Image(systemName: isNewPasswordVisible ? "eye.slash" : "eye")
@@ -163,11 +171,7 @@ struct ChangePasswordView: View {
                 }
                 HStack {
                     Spacer()
-                    Button(action: {
-                        isNewConfirmPasswordVisible.toggle()
-                        isFocusedOldPassword = false
-                        isFocusedNewPassword = false
-                    }) {
+                    Button(action: { clickEyeIcon(eyeType: "newPasswordConfirm")}) {
                         Image(systemName: isNewConfirmPasswordVisible ? "eye.slash" : "eye")
                             .foregroundColor(.gray)
                     }
@@ -183,11 +187,11 @@ struct ChangePasswordView: View {
                     .foregroundColor(.red)
                     .padding(.top, 5)
                     .padding(.bottom, 10)
-            }else{
+            } else{
                 Text("")
             }
             
-
+            
             Button(action: changePasswordButton) {
                 HStack {
                     Text("Şifreyi Değiştir")
@@ -201,7 +205,7 @@ struct ChangePasswordView: View {
                 .cornerRadius(10)
             }
             .disabled(!buttonCheck)
-
+            
             Spacer()
             if showToastMessage {
                 ToastView(message: "Şifre başarılı bir şekilde değiştirildi", iconName: "hand.thumbsup", showToastMessage: $showToastMessage)
@@ -221,7 +225,7 @@ struct ChangePasswordView: View {
                 }) {
                     HStack {
                         Image(systemName: "chevron.left")
-
+                        
                         Text("Geri Dön")
                         Spacer()
                     }

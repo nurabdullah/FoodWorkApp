@@ -1,6 +1,8 @@
+
+// Nice to have: Toggle onchange icin icerisi fonksiyon aliyor mu arastirilacak? Aliyorsa icindeki kodlar bir fonksiyona atanacak.
 import SwiftUI
 
-struct UserRegister: View {
+struct UserRegisterView: View {
     
     @EnvironmentObject private var dataModel: DataModel
     @State private var userName: String = ""
@@ -14,28 +16,22 @@ struct UserRegister: View {
     @State private var checkBoxOn = false
 
 
-    var isLoginEnabled: Bool {
-        return !userName.isEmpty && !userPassword.isEmpty && !userPasswordConfirm.isEmpty && checkBoxOn
+    var isButtonDisabled: Bool {
+        return !(!userName.isEmpty && !userPassword.isEmpty && !userPasswordConfirm.isEmpty && checkBoxOn)
     }
     
     private func registerUser() {
-        if isLoginEnabled {
-            dataModel.isLogin = true
-            dataModel.loginMyArray.removeAll()
-            dataModel.loginMyArray.append(userName)
-            let users = Users(userName: userName, userPassword: userPassword)
-            dataModel.usersList.append(users)
-            userName = ""
-            userPassword = ""
-            userPasswordConfirm = ""
-            isFocusedUserName = false
-            isFocusedPassword = false
-            isFocusedPasswordVisable = false
-            print("Kayıt başarılı")
-            for user in dataModel.usersList {
-                print("User: \(user.userName), Password: \(user.userPassword)")
-            }
-        }
+        let users = Users(userName: userName, userPassword: userPassword)
+        dataModel.userList.append(users)
+        
+        userName = ""
+        userPassword = ""
+        userPasswordConfirm = ""
+        isFocusedUserName = false
+        isFocusedPassword = false
+        isFocusedPasswordVisable = false
+        
+        dataModel.isLogin = true
     }
     
     var body: some View {
@@ -147,12 +143,12 @@ struct UserRegister: View {
                 .background(NavigationLink("", destination: ContentView()))
                 .foregroundColor(.white)
                 .padding()
-                .background(isLoginEnabled ? Color.orange : Color.gray)
+                .background(!isButtonDisabled ? Color.orange : Color.gray)
                 .cornerRadius(10)
             }
-            .disabled(!isLoginEnabled)
+            .disabled(isButtonDisabled)
            
-            NavigationLink(destination: UserLogin()) {
+            NavigationLink(destination: UserLoginView()) {
                 HStack{
                 Text("Üye misin?")
                     .foregroundColor(.black)
@@ -161,24 +157,16 @@ struct UserRegister: View {
             }
             }
             .padding(.top, 10)
-
-            
             Spacer()
         }
         .padding()
-
         }
-
-
         .navigationBarBackButtonHidden(true)
-
     }
-    
-    
 }
 
-struct UserRegister_Previews: PreviewProvider {
+struct UserRegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        UserRegister()
+        UserRegisterView()
     }
 }

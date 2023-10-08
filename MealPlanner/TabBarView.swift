@@ -1,54 +1,39 @@
-
-
 import SwiftUI
 
 struct TabBarView: View {
     
     @StateObject private var dataModel = DataModel()
-
-    
     
     var body: some View {
         if dataModel.isLogin {
             TabView() {
                 Group{
-                ContentView()
-                    .tabItem {
-                        Label("Menü" , systemImage: "house")
-                        
-                    }
-                
-                
-                ListingView()
-                    .tabItem {
-                        Label("Listele" , systemImage: "list.clipboard")
-                    }
-                
-                AccountView()
-                    .tabItem {
-                        Label("Hesabım" , systemImage: "person.fill")
-                        
-                    }
-                
-            }
-            
-            .toolbarBackground(.white, for: .tabBar)
-            .toolbarBackground(.visible, for: .tabBar)
+                    ContentView()
+                        .tabItem {
+                            Label("Menü" , systemImage: "house")
+                            
+                        }
+                    ListingView()
+                        .tabItem {
+                            Label("Listele" , systemImage: "list.clipboard")
+                        }
+                    
+                    AccountView()
+                        .tabItem {
+                            Label("Hesabım" , systemImage: "person.fill")
+                        }
+                }
+                .toolbarBackground(.white, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
             }
             .environmentObject(dataModel)
             .onAppear {
-                UITabBar.appearance()
-                
-                
-            }
+                UITabBar.appearance()}
             .accentColor(.orange)
             
-            
-        }else {
-//            NavigationView {
-                UserRegister()
-                    .environmentObject(dataModel)
-//            }
+        } else {
+            UserRegisterView()
+                .environmentObject(dataModel)
         }
     }
 }

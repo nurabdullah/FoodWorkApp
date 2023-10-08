@@ -15,7 +15,7 @@ struct ListingView: View {
     @State private var isKeyboardVisible = false
     
     
-    public func calculateAverageCalories() -> Color{
+    public func calculateAverageCalories() -> Color {
         let totalCalories = foodList.reduce(0) { $0 + $1.caloryType }
         calorie = Double(totalCalories) / Double(foodList.count)
         averageCalorieText = ""
@@ -31,12 +31,10 @@ struct ListingView: View {
             averageCalorieText = "Yüksek düzeyde kalorili bir liste."
             return Color.red
             
-        }else{
+        } else {
             averageCalorieText = "Liste boş yemek yeme vakti."
             return Color.orange
-            
         }
-                
     }
     
     func calculateTextForCaloryType(_ caloryType: Int) -> String {
@@ -51,8 +49,6 @@ struct ListingView: View {
             return ""
         }
     }
-    
-    
     
     func getBorderColorForCaloryType(_ caloryType: Int) -> Color {
         switch caloryType {
@@ -71,22 +67,17 @@ struct ListingView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "d MMM, HH:mm "
         return dateFormatter.string(from: date)
-        
-        
     }
     
     private let sortingPreferenceKey = "sortingPreference"
     
     private let userDefaults = UserDefaults.standard
     
-    
-    
     func saveSortingPreference(sortKey: [String] ) {
         userDefaults.set(sortKey, forKey: sortingPreferenceKey)
     }
     
     func getSortingPreference() {
-        
         let array : [String]  = userDefaults.stringArray(forKey: sortingPreferenceKey) ?? [String]()
         
         if array.count > 1 {
@@ -163,12 +154,10 @@ struct ListingView: View {
     }
     private func resetList(){
         foodList = dataModel.foodList;
-        
     }
     
     
-    func performSearch(with newValue: String) {
-        
+    func onSearch(with newValue: String) {
         if newValue.isEmpty {
             foodList = dataModel.foodList
         }
@@ -184,6 +173,7 @@ struct ListingView: View {
         }
         return text
     }
+    
     var body: some View {
         
         VStack {
@@ -295,7 +285,6 @@ struct ListingView: View {
                     }
                     
                 }
-//                .onDelete(perform: deleteItem)
                 .listRowInsets(EdgeInsets())
             }
             .onAppear {
@@ -307,7 +296,7 @@ struct ListingView: View {
             .listStyle(PlainListStyle())
             .environment(\.horizontalSizeClass, .compact)
             .onChange(of: searchTerm) { newValue in
-                performSearch(with: newValue)
+                onSearch(with: newValue)
             }
             
             Spacer()
@@ -336,11 +325,6 @@ struct ListingView: View {
         }
     }
 }
-
-
-
-
-
 
 struct ListingView_Previews: PreviewProvider {
     static var previews: some View {

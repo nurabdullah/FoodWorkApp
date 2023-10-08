@@ -12,8 +12,6 @@ import SwiftUI
 struct YemekApp: App {
     @StateObject  var dataModel = DataModel()
     
-
-    
     var body: some Scene {
         WindowGroup{
             TabBarView()

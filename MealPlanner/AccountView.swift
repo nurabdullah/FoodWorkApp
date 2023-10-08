@@ -1,5 +1,9 @@
 import SwiftUI
 
+// TO-DO:
+// 1. ToastView ayri bir dosya olacak. Proplar {message, iconName} disardan parametre olacak gonderilecek.
+
+
 struct ToastView: View {
     let message: String
     let iconName: String
@@ -32,7 +36,6 @@ struct ToastView: View {
     }
 }
 
-
 struct AccountView: View {
     @EnvironmentObject private var dataModel: DataModel
     @State private var isLoggingOut = false
@@ -40,36 +43,25 @@ struct AccountView: View {
     @State private var showToastMessage = false
     @State private var password = ""
 
-
-
-    func deleteUser() {
-        if let loggedInUserName = dataModel.loginMyArray.first {
-            if let index = dataModel.usersList.firstIndex(where: { $0.userName == loggedInUserName }) {
-                dataModel.usersList.remove(at: index)
-                dataModel.loginMyArray.removeAll()
+    func deleteAccount() {
+        // loggedInUserName: Global bir degisken olarak guncellenecek
+        let loggedInUserName = "Ahmet"
+     
+            if let index = dataModel.userList.firstIndex(where: { $0.userName == loggedInUserName }) {
+                dataModel.userList.remove(at: index)
                 dataModel.isLogin = false
                 showToastMessage = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     showToastMessage = false
-                    for user in dataModel.usersList {
-                        print("User: \(user.userName), Password: \(user.userPassword)")
                     }
                 }
             }
-        }
-    }
-
-
+        
     func logoutUser() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             dataModel.isLogin = false
         }
     }
-
-    func appSetting() {
-    }
-
-    
 
     var body: some View {
         ZStack {
@@ -105,7 +97,7 @@ struct AccountView: View {
                                     title: Text("Hesabı Sil"),
                                     message: Text("Hesabınızı Silmek İstediğinizden Emin'misiniz"),
                                     primaryButton: .destructive(Text("Evet")) {
-                                        deleteUser()
+                                        deleteAccount()
                                     },
                                     secondaryButton: .cancel(Text("Hayır")) {
                                         self.showingDeleteAccountPopup = false
@@ -123,14 +115,14 @@ struct AccountView: View {
                             }
                         }
                         Section {
-                            Button(action: appSetting) {
+                            Button(action: {}) {
                                 HStack {
                                     Text("Ayarlar")
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                 }
                             }
-                            Button(action: appSetting) {
+                            Button(action: {}) {
                                 HStack {
                                     Text("Uygulama Hakkında")
                                     Spacer()
@@ -143,8 +135,7 @@ struct AccountView: View {
                         ToolbarItem(placement: .navigationBarLeading) {
                             HStack {
                                 Image(systemName: "person")
-                                Text(dataModel.loginMyArray.first ?? "")
-                                    .font(.system(size: 25))
+                                // TO-DO: Giris yapmis olan kullanicinin adi gelecek
                                 Spacer()
                             }
                             .padding(.top, 25)
