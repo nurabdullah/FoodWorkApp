@@ -165,9 +165,10 @@ struct UserRegister: View {
             
             Spacer()
         }
+        .padding()
+
         }
 
-        .padding()
 
         .navigationBarBackButtonHidden(true)
 
