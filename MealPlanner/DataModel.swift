@@ -13,7 +13,8 @@ struct Users: Codable, Hashable {
 
 class DataModel: ObservableObject {
     
-    private let dataKey = "savedFoodList"
+    private let dataFoodKey = "savedFoodList"
+    private let dataLoginArrayKey = "savedUsersList"
     private let loginKey = "isLogin"
     private let loginArrayKey = "loginMyArray"
     
@@ -62,12 +63,12 @@ class DataModel: ObservableObject {
     
     private func saveFoodData() {
         if let encodedData = try? JSONEncoder().encode(foodList) {
-            UserDefaults.standard.set(encodedData, forKey: dataKey)
+            UserDefaults.standard.set(encodedData, forKey: dataFoodKey)
         }
     }
      private func saveUsersData() {
         if let encodedData = try? JSONEncoder().encode(usersList) {
-            UserDefaults.standard.set(encodedData, forKey: dataKey)
+            UserDefaults.standard.set(encodedData, forKey: dataLoginArrayKey)
         }
     }
     
@@ -82,14 +83,14 @@ class DataModel: ObservableObject {
     
     
     private func loadFoodData() {
-        if let encodedData = UserDefaults.standard.data(forKey: dataKey) {
+        if let encodedData = UserDefaults.standard.data(forKey: dataFoodKey) {
             if let decodedData = try? JSONDecoder().decode([Food].self, from: encodedData) {
                 foodList = decodedData
             }
         }
     }
     private func loadUsersData() {
-        if let encodedData = UserDefaults.standard.data(forKey: dataKey) {
+        if let encodedData = UserDefaults.standard.data(forKey: dataLoginArrayKey) {
             if let decodedData = try? JSONDecoder().decode([Users].self, from: encodedData) {
                 usersList = decodedData
             }
