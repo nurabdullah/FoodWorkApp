@@ -43,7 +43,7 @@ struct AccountView: View {
                             }
                             .foregroundColor((showingDeleteAccountPopup || isLoggingOut) ? Color.gray.opacity(0.3) : .orange)
                             .overlay {
-                                 NavigationLink(destination: {ChangePasswordView(oldPassword: $password)}, label: { EmptyView() })
+                                 NavigationLink(destination: {ChangePasswordView()}, label: { EmptyView() })
                                  .opacity(0)
                             }
 

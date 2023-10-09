@@ -4,7 +4,7 @@
 import SwiftUI
 
 struct ChangePasswordView: View {
-    @Binding var oldPassword: String
+    @State private var oldPassword: String = ""
     @State private var newPassword: String = ""
     @State private var newPasswordConfirm: String = ""
     @State private var isPasswordMatchError = false
@@ -245,7 +245,7 @@ struct ChangePasswordView: View {
 
 struct ChangePasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ChangePasswordView(oldPassword: .constant("EskiParolanızıBurayaGirin"))
+        ChangePasswordView()
     }
 }
 
