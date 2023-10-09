@@ -80,6 +80,8 @@ struct ChangePasswordView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                         )
                         .focused($isFocusedOldPassword)
+                        .autocapitalization(.none)
+
                     
                 } else {
                     SecureField("Eski Şifre", text: $oldPassword)
@@ -117,6 +119,8 @@ struct ChangePasswordView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                         )
                         .focused($isFocusedNewPassword)
+                        .autocapitalization(.none)
+
                     
                 } else {
                     SecureField("Yeni Şifre", text: $newPassword)
@@ -156,6 +160,8 @@ struct ChangePasswordView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                         )
                         .focused($isFocusedNewConfirmPassword)
+                        .autocapitalization(.none) 
+
                     
                 } else {
                     SecureField("Yeni Şifre Tekrar", text: $newPasswordConfirm)

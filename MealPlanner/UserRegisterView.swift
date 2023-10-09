@@ -69,6 +69,8 @@ struct UserRegisterView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                         )
                         .focused($isFocusedUserName)
+                        .autocapitalization(.none)
+
                     
                     ZStack {
                         if isUserPasswordVisible {
@@ -81,6 +83,8 @@ struct UserRegisterView: View {
                                         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                                 )
                                 .focused($isFocusedPassword)
+                                .autocapitalization(.none)
+
                         } else {
                             SecureField("Şifre", text: $userPassword)
                                 .textFieldStyle(PlainTextFieldStyle())
@@ -116,6 +120,8 @@ struct UserRegisterView: View {
                                     .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                             )
                             .focused($isFocusedPasswordVisable)
+                            .autocapitalization(.none)
+
                     } else {
                         SecureField("Şifre Tekrar", text: $userPasswordConfirm)
                             .textFieldStyle(PlainTextFieldStyle())
