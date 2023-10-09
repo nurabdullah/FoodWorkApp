@@ -1,5 +1,4 @@
 
-// Nice to have: Toggle onchange icin icerisi fonksiyon aliyor mu arastirilacak? Aliyorsa icindeki kodlar bir fonksiyona atanacak.
 import SwiftUI
 
 struct UserRegisterView: View {
@@ -15,9 +14,9 @@ struct UserRegisterView: View {
     @State private var isUserPasswordConfirmVisible = false
     @State private var checkBoxOn = false
     @State private var someString: String = ""
-
-
-
+    
+    
+    
     var isButtonDisabled: Bool {
         return !(!userName.isEmpty && !userPassword.isEmpty && !userPasswordConfirm.isEmpty && checkBoxOn)
     }
@@ -39,54 +38,67 @@ struct UserRegisterView: View {
             someString = ""
         }
     }
-
+    
+    
+    private func clickField(eyeType: String) {
+        switch eyeType {
+        case "password":
+            isUserPasswordVisible.toggle()
+            isFocusedUserName = false
+            isFocusedPasswordVisable = false
+        case "passwordConfirm":
+            isUserPasswordConfirmVisible.toggle()
+            isFocusedUserName = false
+            isFocusedPassword = false
+        default:
+            break
+        }
+    }
+    
     
     var body: some View {
         NavigationView{
-        VStack(alignment: .leading, spacing: 20) {
-            Section(header: Text("Kayıt Ol").font(.system(size: 25, weight: .medium))) {
-                TextField("Kullanıcı Adı", text: $userName)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(isFocusedUserName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                    )
-                    .focused($isFocusedUserName)
-                
-                ZStack {
-                    if isUserPasswordVisible {
-                        TextField("Şifre", text: $userPassword)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                            )
-                            .focused($isFocusedPassword)
-                    } else {
-                        SecureField("Şifre", text: $userPassword)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                            )
-                            .focused($isFocusedPassword)
-                    }
+            VStack(alignment: .leading, spacing: 20) {
+                Section(header: Text("Kayıt Ol").font(.system(size: 25, weight: .medium))) {
+                    TextField("Kullanıcı Adı", text: $userName)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(isFocusedUserName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        )
+                        .focused($isFocusedUserName)
                     
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            isUserPasswordVisible.toggle()
-                            isFocusedUserName = false
-                            isFocusedPasswordVisable = false
-                        }) {
-                            Image(systemName: isUserPasswordVisible ? "eye.slash" : "eye")
-                                .foregroundColor(.gray)
+                    ZStack {
+                        if isUserPasswordVisible {
+                            TextField("Şifre", text: $userPassword)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                                )
+                                .focused($isFocusedPassword)
+                        } else {
+                            SecureField("Şifre", text: $userPassword)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                                )
+                                .focused($isFocusedPassword)
+                        }
+                        
+                        HStack {
+                            Spacer()
+                            Button(action: {clickField(eyeType: "password")}) {
+                                Image(systemName: isUserPasswordVisible ? "eye.slash" : "eye")
+                                    .foregroundColor(.gray)
+                            
                         }
                         .padding(.trailing, 15)
                         .buttonStyle(BorderedButtonStyle())
@@ -118,64 +130,61 @@ struct UserRegisterView: View {
                     
                     HStack {
                         Spacer()
-                        Button(action: {
-                            isUserPasswordConfirmVisible.toggle()
-                            isFocusedUserName = false
-                            isFocusedPassword = false
-                        }) {
-                            Image(systemName: isUserPasswordConfirmVisible ? "eye.slash" : "eye")
+                        Button(action: {clickField(eyeType: "passwordConfirm")}) {
+                            Image(systemName: isUserPasswordVisible ? "eye.slash" : "eye")
                                 .foregroundColor(.gray)
-                        }
-                        .padding(.trailing, 15)
-                        .buttonStyle(BorderedButtonStyle())
                         
                     }
+                    .padding(.trailing, 15)
+                    .buttonStyle(BorderedButtonStyle())
+                    
                 }
             }
-            
-            Toggle("KVKK metnini okudum kabul ediyorum.", isOn: $checkBoxOn)
-                .font(.system(size: 15, weight: .medium))
-                .onChange(of: checkBoxOn) { newValue in
-                    isFocusedPassword = false
-                    isFocusedUserName = false
-                }
-            
-            Button(action: registerUser) {
-                HStack {
-                    Image(systemName: "rectangle.portrait.and.arrow.right.fill")
-                        .foregroundColor(.white)
-                    Text("Kayıt Ol")
-                        .foregroundColor(.white)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .background(NavigationLink("", destination: ContentView()))
-                .foregroundColor(.white)
-                .padding()
-                .background(!isButtonDisabled ? Color.orange : Color.gray)
-                .cornerRadius(10)
+        }
+        
+        Toggle("KVKK metnini okudum kabul ediyorum.", isOn: $checkBoxOn)
+            .font(.system(size: 15, weight: .medium))
+            .onChange(of: checkBoxOn) { newValue in
+                isFocusedPassword = false
+                isFocusedUserName = false
             }
-            .disabled(isButtonDisabled)
-           
-            NavigationLink(destination: UserLoginView()) {
-                HStack{
+        
+        Button(action: registerUser) {
+            HStack {
+                Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                    .foregroundColor(.white)
+                Text("Kayıt Ol")
+                    .foregroundColor(.white)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .background(NavigationLink("", destination: ContentView()))
+            .foregroundColor(.white)
+            .padding()
+            .background(!isButtonDisabled ? Color.orange : Color.gray)
+            .cornerRadius(10)
+        }
+        .disabled(isButtonDisabled)
+        
+        NavigationLink(destination: UserLoginView()) {
+            HStack{
                 Text("Üye misin?")
                     .foregroundColor(.black)
                 Text("Giriş yap")
                     .foregroundColor(.orange)
             }
-            }
-            Text(someString)
-                .foregroundColor(.red)
-                .font(.system(size: 15, weight: .medium))
-                .padding(.top, 5)
-                .opacity(someString.isEmpty ? 0 : 1)
+        }
+        Text(someString)
+            .foregroundColor(.red)
+            .font(.system(size: 15, weight: .medium))
+            .padding(.top, 5)
+            .opacity(someString.isEmpty ? 0 : 1)
             .padding(.top, 10)
-            Spacer()
-        }
-        .padding()
-        }
-        .navigationBarBackButtonHidden(true)
+        Spacer()
     }
+        .padding()
+}
+    .navigationBarBackButtonHidden(true)
+}
 }
 
 struct UserRegisterView_Previews: PreviewProvider {

@@ -26,7 +26,6 @@ struct ChangePasswordView: View {
     }
     
     func changePasswordButton() {
-
         isFocusedOldPassword = false
         isFocusedNewPassword = false
         isFocusedNewConfirmPassword = false

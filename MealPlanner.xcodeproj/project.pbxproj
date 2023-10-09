@@ -119,9 +119,9 @@
 				D998CB2F2AD03198005FAB8C /* AccountView.swift */,
 				D9AA89C02ACF366000C8D527 /* UserRegisterView.swift */,
 				D9152A392AD03F2400B6C6AF /* ChangePasswordView.swift */,
+				D9B14A452AD44C4800063C1B /* ToastView.swift */,
 				25ED75102A5DCED1005EDF93 /* Assets.xcassets */,
 				25ED75122A5DCED1005EDF93 /* Preview Content */,
-				D9B14A452AD44C4800063C1B /* ToastView.swift */,
 			);
 			path = MealPlanner;
 			sourceTree = "<group>";
