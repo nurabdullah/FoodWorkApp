@@ -1,28 +1,5 @@
 import SwiftUI
 
-struct ToastContentView: View {
-    var message: String
-    var body: some View {
-        ZStack {
-            VStack {
-                Image(systemName: "hand.thumbsup")
-                    .font(.largeTitle)
-                    .foregroundColor(Color.orange)
-                    .padding(.bottom, 10)
-                
-                Text(message)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(10)
-            }
-            .padding()
-            .background(Color.gray.opacity(0.5))
-            .cornerRadius(20)
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 0.4))
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
 
 struct ContentView: View {
     @State private var foodName: String = ""
@@ -204,7 +181,7 @@ struct ContentView: View {
             .padding()
             
             if showToastMessage {
-                ToastContentView(message: "Yemek başarıyla eklendi!")
+                ToastView(message: "Yemek başarıyla eklendi!", iconName: "hand.thumbsup", showToastMessage: $showToastMessage)
                     .onDisappear {
                         showToastMessage = false
                     }

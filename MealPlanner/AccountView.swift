@@ -1,41 +1,5 @@
 import SwiftUI
 
-// TO-DO:
-// 1. ToastView ayri bir dosya olacak. Proplar {message, iconName} disardan parametre olacak gonderilecek.
-
-
-struct ToastView: View {
-    let message: String
-    let iconName: String
-    @Binding var showToastMessage: Bool
-
-    var body: some View {
-        ZStack {
-            VStack {
-                Image(systemName: iconName)
-                    .font(.largeTitle)
-                    .foregroundColor(Color.orange)
-                    .padding(.bottom, 10)
-                
-                Text(message)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(10)
-            }
-            .padding()
-            .background(Color.gray.opacity(0.5))
-            .cornerRadius(20)
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 0.4))
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    showToastMessage = false
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
 struct AccountView: View {
     @EnvironmentObject private var dataModel: DataModel
     @State private var isLoggingOut = false
