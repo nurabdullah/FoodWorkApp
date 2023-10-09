@@ -26,7 +26,7 @@ class DataModel: ObservableObject {
         }
     }
     
-    @Published var someString: String = "" {
+    @Published var someLoginStringKey: String = "" {
         didSet {
             saveStringData()
         }
@@ -77,7 +77,7 @@ class DataModel: ObservableObject {
     }
     
     private func saveStringData() {
-        UserDefaults.standard.set(someString, forKey: loginStringKey)
+        UserDefaults.standard.set(someLoginStringKey, forKey: loginStringKey)
     }
     
     private func getFoodData() {
@@ -99,7 +99,7 @@ class DataModel: ObservableObject {
         isLogin = UserDefaults.standard.bool(forKey: loginKey)
     }
     private func getStringData() {
-        someString = UserDefaults.standard.string(forKey: loginStringKey) ?? ""
+        someLoginStringKey = UserDefaults.standard.string(forKey: loginStringKey) ?? ""
     }
 
     

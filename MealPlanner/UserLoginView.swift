@@ -13,14 +13,10 @@ struct UserLoginView: View {
         return !(!userName.isEmpty && !password.isEmpty)
     }
     
-    func loginUser() {
-        // #TO-DO:
-        // UserName unique olmali. Eger ayni username ile bir kullanici varsa yeni kayit yapilmamali.
-        
+    func loginUser() {        
         if let user = dataModel.userList.first(where: { $0.userName == userName && $0.userPassword == password }) {
             dataModel.isLogin = true
-            // TO-DO normalde bu vardi:
-            // dataModel.loginMyArray.removeAll()
+            dataModel.someLoginStringKey = userName
             userName = ""
             password = ""
         } else {

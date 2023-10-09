@@ -44,9 +44,7 @@ struct AccountView: View {
     @State private var password = ""
 
     func deleteAccount() {
-        // loggedInUserName: Global bir degisken olarak guncellenecek
-        let loggedInUserName = "Ahmet"
-     
+        let loggedInUserName = dataModel.someLoginStringKey
             if let index = dataModel.userList.firstIndex(where: { $0.userName == loggedInUserName }) {
                 dataModel.userList.remove(at: index)
                 dataModel.isLogin = false
@@ -55,6 +53,9 @@ struct AccountView: View {
                     showToastMessage = false
                     }
                 }
+        for user in dataModel.userList {
+            print("User: \(user.userName), Password: \(user.userPassword)")
+        }
             }
         
     func logoutUser() {
@@ -135,7 +136,7 @@ struct AccountView: View {
                         ToolbarItem(placement: .navigationBarLeading) {
                             HStack {
                                 Image(systemName: "person")
-                                // TO-DO: Giris yapmis olan kullanicinin adi gelecek
+                                Text(dataModel.someLoginStringKey)
                                 Spacer()
                             }
                             .padding(.top, 25)

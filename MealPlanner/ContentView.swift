@@ -60,10 +60,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 30) {
-                
-                //  TO-DO
-                //  firstItem: global bir deger olacak. kullanici dataModel'de duracak.
-                let firstItem = dataModel.someString
+                let firstItem = dataModel.someLoginStringKey
                 if !firstItem.isEmpty {
                     HStack {
                         Text("Hoşgeldin " + firstItem)

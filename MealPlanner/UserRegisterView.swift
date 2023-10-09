@@ -28,6 +28,7 @@ struct UserRegisterView: View {
         } else {
             let users = Users(userName: userName, userPassword: userPassword)
             dataModel.userList.append(users)
+            dataModel.someLoginStringKey = userName
             userName = ""
             userPassword = ""
             userPasswordConfirm = ""
