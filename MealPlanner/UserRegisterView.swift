@@ -14,6 +14,8 @@ struct UserRegisterView: View {
     @State private var isUserPasswordVisible = false
     @State private var isUserPasswordConfirmVisible = false
     @State private var checkBoxOn = false
+    @State private var someString: String = ""
+
 
 
     var isButtonDisabled: Bool {
@@ -21,18 +23,22 @@ struct UserRegisterView: View {
     }
     
     private func registerUser() {
-        let users = Users(userName: userName, userPassword: userPassword)
-        dataModel.userList.append(users)
-        
-        userName = ""
-        userPassword = ""
-        userPasswordConfirm = ""
-        isFocusedUserName = false
-        isFocusedPassword = false
-        isFocusedPasswordVisable = false
-        
-        dataModel.isLogin = true
+        if dataModel.userList.contains(where: { $0.userName == userName }) {
+            someString = "Kullanıcı adı kullanılıyor"
+        } else {
+            let users = Users(userName: userName, userPassword: userPassword)
+            dataModel.userList.append(users)
+            userName = ""
+            userPassword = ""
+            userPasswordConfirm = ""
+            isFocusedUserName = false
+            isFocusedPassword = false
+            isFocusedPasswordVisable = false
+            dataModel.isLogin = true
+            someString = ""
+        }
     }
+
     
     var body: some View {
         NavigationView{
@@ -121,6 +127,7 @@ struct UserRegisterView: View {
                         }
                         .padding(.trailing, 15)
                         .buttonStyle(BorderedButtonStyle())
+                        
                     }
                 }
             }
@@ -156,6 +163,11 @@ struct UserRegisterView: View {
                     .foregroundColor(.orange)
             }
             }
+            Text(someString)
+                .foregroundColor(.red)
+                .font(.system(size: 15, weight: .medium))
+                .padding(.top, 5)
+                .opacity(someString.isEmpty ? 0 : 1)
             .padding(.top, 10)
             Spacer()
         }

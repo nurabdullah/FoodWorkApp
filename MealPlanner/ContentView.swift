@@ -63,7 +63,7 @@ struct ContentView: View {
                 
                 //  TO-DO
                 //  firstItem: global bir deger olacak. kullanici dataModel'de duracak.
-                let firstItem = "Ahmet"
+                let firstItem = dataModel.someString
                 if !firstItem.isEmpty {
                     HStack {
                         Text("Hoşgeldin " + firstItem)

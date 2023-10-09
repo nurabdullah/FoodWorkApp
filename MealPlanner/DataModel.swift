@@ -16,10 +16,19 @@ class DataModel: ObservableObject {
     private let dataFoodKey = "savedFoodList"
     private let dataLoginArrayKey = "savedUsersList"
     private let loginKey = "isLogin"
+    private let loginStringKey = "someLoginStringKey"
+    
+
     
     @Published var isLogin: Bool = false {
         didSet {
             saveLoginData()
+        }
+    }
+    
+    @Published var someString: String = "" {
+        didSet {
+            saveStringData()
         }
     }
     
@@ -40,6 +49,7 @@ class DataModel: ObservableObject {
         getUserData()
         getLoginData()
         subscribeToAppLifecycle()
+        getStringData()
     }
     
     private func subscribeToAppLifecycle() {
@@ -66,6 +76,10 @@ class DataModel: ObservableObject {
         UserDefaults.standard.set(isLogin, forKey: loginKey)
     }
     
+    private func saveStringData() {
+        UserDefaults.standard.set(someString, forKey: loginStringKey)
+    }
+    
     private func getFoodData() {
         if let encodedData = UserDefaults.standard.data(forKey: dataFoodKey) {
             if let decodedData = try? JSONDecoder().decode([Food].self, from: encodedData) {
@@ -84,6 +98,10 @@ class DataModel: ObservableObject {
     private func getLoginData() {
         isLogin = UserDefaults.standard.bool(forKey: loginKey)
     }
+    private func getStringData() {
+        someString = UserDefaults.standard.string(forKey: loginStringKey) ?? ""
+    }
+
     
 }
 
