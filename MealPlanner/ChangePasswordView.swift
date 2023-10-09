@@ -49,24 +49,25 @@ struct ChangePasswordView: View {
         }
     }
     
-    func clickEyeIcon(eyeType: String)  {
-        // Nice to have: switch case gecirilse daha verimli olur!
-        if eyeType == "oldPassword" {
+    func clickEyeIcon(eyeType: String) {
+        switch eyeType {
+        case "oldPassword":
             isOldPasswordVisible.toggle()
             isFocusedNewPassword = false
             isFocusedNewConfirmPassword = false
-        } else if eyeType == "newPassword"{
+        case "newPassword":
             isNewPasswordVisible.toggle()
             isFocusedOldPassword = false
             isFocusedNewConfirmPassword = false
-        } else if eyeType == "newPasswordConfirm"{
+        case "newPasswordConfirm":
             isNewConfirmPasswordVisible.toggle()
             isFocusedOldPassword = false
             isFocusedNewPassword = false
+        default:
+            break
         }
-        
-        
     }
+
     var body: some View {
         VStack {
             ZStack {
