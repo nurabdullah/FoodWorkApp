@@ -1,5 +1,18 @@
 import SwiftUI
 
+extension View {
+    func textFieldStyle(isFocused: Bool) -> some View{
+        self.textFieldStyle(PlainTextFieldStyle())
+            .padding(10)
+            .autocapitalization(.none)
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(isFocused ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
+                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            )
+    }
+}
+
 struct UserLoginView: View {
     @EnvironmentObject private var dataModel: DataModel
     @State private var userName: String = ""
@@ -22,7 +35,6 @@ struct UserLoginView: View {
         } else {
             errorMessage = "Kullanıcı adı veya şifre yanlış"
         }
-        
     }
     
     var body: some View {
@@ -31,38 +43,17 @@ struct UserLoginView: View {
                 Section(header: Text("Giriş")
                     .font(.system(size: 25, weight: .medium))) {
                         TextField("Kullanıcı Adı", text: $userName)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isFocusedUserName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                            )
                             .focused($isFocusedUserName)
-                            .autocapitalization(.none)
-
+                            .textFieldStyle(isFocused: isFocusedUserName)
+    
                         ZStack {
                             if isPasswordVisible {
                                 TextField("Şifre", text: $password)
-                                    .textFieldStyle(PlainTextFieldStyle())
-                                    .padding(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                                    )
+                                    .textFieldStyle(isFocused: isFocusedPassword)
                                     .focused($isFocusedPassword)
-                                    .autocapitalization(.none)
-
                             } else {
                                 SecureField("Şifre", text: $password)
-                                    .textFieldStyle(PlainTextFieldStyle())
-                                    .padding(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .stroke(isFocusedPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                                    )
+                                    .textFieldStyle(isFocused: isFocusedPassword)
                                     .focused($isFocusedPassword)
                             }
                             HStack {
