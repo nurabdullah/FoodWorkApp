@@ -13,6 +13,7 @@ struct ChangePasswordView: View {
     @FocusState private var isFocusedNewConfirmPassword: Bool
     @State private var showToastMessage = false
     @Environment(\.dismiss) var dismiss
+    @State private var someErorMatchText: String = ""
     
     var isPasswordMatch: Bool {
         return newPassword == newPasswordConfirm
@@ -38,10 +39,10 @@ struct ChangePasswordView: View {
             }
         } else {
             isPasswordMatchError = true
-            Text("Yeni şifreler eşleşmiyor.")
-                .foregroundColor(.red)
-                .padding(.top, 5)
-                .padding(.bottom, 10)
+            someErorMatchText = "Yeni şifreler eşleşmiyor."
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                someErorMatchText = ""
+            }
         }
     }
     
@@ -138,15 +139,6 @@ struct ChangePasswordView: View {
                 }
             }
             
-            if isPasswordMatchError {
-                Text("Yeni şifreler eşleşmiyor.")
-                    .foregroundColor(.red)
-                    .padding(.top, 5)
-                    .padding(.bottom, 10)
-            } else{
-                Text("")
-            }
-            
             Button(action: changePasswordButton) {
                 HStack {
                     Text("Şifreyi Değiştir")
@@ -160,6 +152,16 @@ struct ChangePasswordView: View {
                 .cornerRadius(10)
             }
             .disabled(!buttonCheck)
+            
+            if isPasswordMatchError {
+                Text(someErorMatchText)
+                    .foregroundColor(.red)
+                    .padding(.top, 5)
+                    .padding(.bottom, 10)
+            } else{
+                Text("")
+            }
+            
             
             Spacer()
             if showToastMessage {

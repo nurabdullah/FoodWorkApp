@@ -13,7 +13,7 @@ struct UserRegisterView: View {
     @State private var isUserPasswordVisible = false
     @State private var isUserPasswordConfirmVisible = false
     @State private var checkBoxOn = false
-    @State private var someString: String = ""
+    @State private var someErorMatchText: String = ""
     
     
     var isButtonDisabled: Bool {
@@ -22,7 +22,11 @@ struct UserRegisterView: View {
     
     private func registerUser() {
         if dataModel.userList.contains(where: { $0.userName == userName }) {
-            someString = "Kullanıcı adı kullanılıyor"
+            someErorMatchText = "Kullanıcı adı kullanılıyor!"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                someErorMatchText = ""
+            }
+            
         } else {
             let users = Users(userName: userName, userPassword: userPassword)
             dataModel.userList.append(users)
@@ -34,7 +38,7 @@ struct UserRegisterView: View {
             isFocusedPassword = false
             isFocusedPasswordVisable = false
             dataModel.isLogin = true
-            someString = ""
+            someErorMatchText = ""
         }
     }
     
@@ -136,11 +140,11 @@ struct UserRegisterView: View {
                             .foregroundColor(.orange)
                     }
                 }
-                Text(someString)
+                Text(someErorMatchText)
                     .foregroundColor(.red)
                     .font(.system(size: 15, weight: .medium))
                     .padding(.top, 5)
-                    .opacity(someString.isEmpty ? 0 : 1)
+                    .opacity(someErorMatchText.isEmpty ? 0 : 1)
                     .padding(.top, 10)
                 Spacer()
             }
