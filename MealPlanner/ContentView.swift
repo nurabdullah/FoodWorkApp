@@ -47,14 +47,8 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 12) {
                     TextField("Yemek adı", text: $foodName)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedFoodName ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedFoodName)
+                        .textFieldStyle(isFocused: isFocusedFoodName)
                 }
                 
                 Button(action: {
