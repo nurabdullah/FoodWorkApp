@@ -1,6 +1,3 @@
-// TO-DO
-// *** 1. SecureField ve TextField'larin style'lari ayni. Tekrar etmesini onle!
-
 import SwiftUI
 
 struct ChangePasswordView: View {
@@ -72,28 +69,14 @@ struct ChangePasswordView: View {
             ZStack {
                 if isOldPasswordVisible {
                     TextField("Eski Şifre", text: $oldPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedOldPassword)
-                        .autocapitalization(.none)
+                        .textFieldStyle(isFocused: isFocusedOldPassword)
 
                     
                 } else {
                     SecureField("Eski Şifre", text: $oldPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedOldPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedOldPassword)
-                    
+                        .textFieldStyle(isFocused: isFocusedOldPassword)
                 }
                 HStack {
                     Spacer()
@@ -107,38 +90,21 @@ struct ChangePasswordView: View {
                 
             }
             
-            
             ZStack {
                 if isNewPasswordVisible {
                     TextField("Yeni Şifre", text: $newPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedNewPassword)
-                        .autocapitalization(.none)
-
+                        .textFieldStyle(isFocused: isFocusedNewPassword)
                     
                 } else {
                     SecureField("Yeni Şifre", text: $newPassword)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedNewPassword)
-                    
+                        .textFieldStyle(isFocused: isFocusedNewPassword)
                 }
                 HStack {
                     Spacer()
                     Button(action: {clickEyeIcon(eyeType: "newPassword")
                        
-                        
                     }) {
                         Image(systemName: isNewPasswordVisible ? "eye.slash" : "eye")
                             .foregroundColor(.gray)
@@ -148,31 +114,16 @@ struct ChangePasswordView: View {
                 }
             }
             
-            
             ZStack {
                 if isNewConfirmPasswordVisible {
                     TextField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedNewConfirmPassword)
-                        .autocapitalization(.none) 
-
+                        .textFieldStyle(isFocused: isFocusedNewConfirmPassword)
                     
                 } else {
                     SecureField("Yeni Şifre Tekrar", text: $newPasswordConfirm)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isFocusedNewConfirmPassword ? Color.orange : Color.gray.opacity(0.2), lineWidth: 2)
-                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        )
                         .focused($isFocusedNewConfirmPassword)
+                        .textFieldStyle(isFocused: isFocusedNewConfirmPassword)
                     
                 }
                 HStack {
@@ -187,7 +138,6 @@ struct ChangePasswordView: View {
                 }
             }
             
-            
             if isPasswordMatchError {
                 Text("Yeni şifreler eşleşmiyor.")
                     .foregroundColor(.red)
@@ -196,7 +146,6 @@ struct ChangePasswordView: View {
             } else{
                 Text("")
             }
-            
             
             Button(action: changePasswordButton) {
                 HStack {
@@ -241,7 +190,6 @@ struct ChangePasswordView: View {
         .padding()
     }
 }
-
 
 struct ChangePasswordView_Previews: PreviewProvider {
     static var previews: some View {
