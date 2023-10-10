@@ -17,10 +17,7 @@ struct AccountView: View {
                     showToastMessage = false
                     }
                 }
-        for user in dataModel.userList {
-            print("User: \(user.userName), Password: \(user.userPassword)")
-        }
-            }
+    }
         
     func logoutUser() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -31,7 +28,6 @@ struct AccountView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 20) {
-                
                 NavigationStack {
                     List {
                         Section {
@@ -101,6 +97,8 @@ struct AccountView: View {
                             HStack {
                                 Image(systemName: "person")
                                 Text(dataModel.someLoginStringKey)
+                                    .font(.system(size: 25))
+
                                 Spacer()
                             }
                             .padding(.top, 25)
